@@ -4,16 +4,12 @@
     "next/typescript",
     "eslint:recommended",
     "plugin:prettier/recommended",
-    "plugin:storybook/recommended"
+    "plugin:storybook/recommended",
+    "plugin:@typescript-eslint/eslint-recommended"
   ],
-  "plugins": [
-    "@typescript-eslint",
-    "prettier"
-  ],
+  "plugins": ["@typescript-eslint", "prettier"],
   "rules": {
-    "prettier/prettier": [
-      "error"
-    ],
+    "prettier/prettier": ["error", { "endOfLine": "auto" }],
     "react/react-in-jsx-scope": "off"
   }
 }
