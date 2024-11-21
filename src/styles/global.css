@@ -1,0 +1,17 @@
+:root {
+    /* from color system */
+    --black: #000000;
+    --gray-1: #121212;
+    --gray-2: #595959;
+    --gray-3: #767676;
+    --gray-4: #BDBDBD;
+    --gray-5: #E0E0E0;
+    --gray-6: #F3F3F3;
+    --red: #D32F2F;
+    --yellow: #F9A825;
+    --green: #4CAF50;
+    --primary: #238AFF;
+    --primary-lighter: #7CB9FF;
+    --primary-darker: #0062D1;
+    --white: #FFFFFF;
+}
