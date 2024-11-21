@@ -1,4 +1,5 @@
 import ThemeProviderWrapper from '@/components/common/ThemeProviderWrapper';
+import GlobalStyle from '@/styles/global';
 
 export const metadata = {
   title: 'Next.js',
@@ -9,7 +10,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ko">
       <body>
-        <ThemeProviderWrapper>{children}</ThemeProviderWrapper>
+        <ThemeProviderWrapper>
+          <GlobalStyle />
+          {children}
+        </ThemeProviderWrapper>
       </body>
     </html>
   );
