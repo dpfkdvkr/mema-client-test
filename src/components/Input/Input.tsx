@@ -1,10 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import ToggleVisibilityButton from '@/components/common/ToggleVisibilityButton';
 import { useInputStatus, InputStatus } from '@/hooks/useInputStatus';
-import { fontStyles } from '@/styles/mixins';
 
 interface InputProps {
   label?: string;
@@ -125,7 +124,7 @@ const StyledInput = styled.input`
   border: none;
   outline: none;
   padding: 0;
-  ${fontStyles.text('2xl')};
+  ${({ theme }) => theme.fonts.text['2xl']};
   &::placeholder {
     color: ${({ theme }) => theme.colors.gray[4]};
   }
@@ -136,6 +135,6 @@ const StyledInput = styled.input`
 
 const ErrorMessage = styled.div`
   margin-top: 8px;
-  ${fontStyles.text('sm')};
+  ${({ theme }) => theme.fonts.text.sm};
   color: ${({ theme }) => theme.colors.red};
 `;
