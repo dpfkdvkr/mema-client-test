@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { EyeIcon, EyeOffIcon } from '@/assets/icons/components';
+import { Eye, EyeOff } from 'react-feather';
+import { useTheme } from 'styled-components';
 
 interface ToggleVisibilityButtonProps {
   isVisible: boolean;
@@ -15,10 +16,18 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const ToggleVisibilityButton: React.FC<ToggleVisibilityButtonProps> = ({ isVisible, onClick }) => (
-  <Button onClick={onClick} type="button">
-    {isVisible ? <EyeOffIcon width={24} height={24} /> : <EyeIcon width={24} height={24} />}
-  </Button>
-);
+const ToggleVisibilityButton: React.FC<ToggleVisibilityButtonProps> = ({ isVisible, onClick }) => {
+  const theme = useTheme();
+
+  return (
+    <Button onClick={onClick} type="button">
+      {isVisible ? (
+        <EyeOff size={24} color={theme.colors.gray[4]} />
+      ) : (
+        <Eye size={24} color={theme.colors.gray[4]} />
+      )}
+    </Button>
+  );
+};
 
 export default ToggleVisibilityButton;
