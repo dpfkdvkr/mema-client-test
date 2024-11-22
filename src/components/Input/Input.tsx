@@ -7,12 +7,12 @@ import { useInputStatus, InputStatus } from '@/hooks/useInputStatus';
 import { fontStyles } from '@/styles/mixins';
 
 interface InputProps {
-  label: string;
+  label?: string;
   placeholder?: string;
   value?: string;
   type?: 'text' | 'password' | 'email';
   width?: string | number;
-  onChange?: (value: string) => void;
+  onChange: (value: string) => void;
   showError?: boolean;
   errorMessage?: string;
   showToggleVisibility?: boolean;
