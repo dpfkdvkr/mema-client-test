@@ -15,7 +15,6 @@ interface InputProps {
   onChange: (value: string) => void;
   showError?: boolean;
   errorMessage?: string;
-  showToggleVisibility?: boolean;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -23,11 +22,10 @@ const Input: React.FC<InputProps> = ({
   placeholder = '',
   value = '',
   type = 'text',
-  width = '400px',
+  width = '100%',
   onChange,
   showError = false,
   errorMessage = '',
-  showToggleVisibility = false,
 }) => {
   const [inputValue, setInputValue] = useState(value || '');
   const [isFocused, setFocused] = useState(false);
@@ -52,7 +50,7 @@ const Input: React.FC<InputProps> = ({
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
         />
-        {showToggleVisibility && type === 'password' && (
+        {type === 'password' && (
           <ToggleVisibilityButton
             isVisible={isPasswordVisible}
             onClick={() => setIsPasswordVisible((prev) => !prev)}
@@ -67,7 +65,6 @@ const Input: React.FC<InputProps> = ({
 export default Input;
 
 const InputWrapper = styled.div<{ width?: string | number }>`
-  margin-bottom: 1rem;
   width: ${({ width }) => (typeof width === 'number' ? `${width}px` : width || '100%')};
 `;
 
