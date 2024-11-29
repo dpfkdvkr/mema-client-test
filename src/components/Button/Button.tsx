@@ -4,13 +4,13 @@ import styled, { css } from 'styled-components';
 
 type Props = {
   name: string;
-  type?: 'default' | 'square' | 'ghost';
+  buttonType?: 'default' | 'square' | 'ghost';
   fontStyle?: 'bold' | 'normal' | 'thin';
-};
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-const Button = ({ name, type = 'default', fontStyle = 'bold', ...props }: Props) => {
+const Button = ({ name, buttonType = 'default', fontStyle = 'bold', ...props }: Props) => {
   return (
-    <StyledButton buttonType={type} fontStyle={fontStyle} {...props}>
+    <StyledButton buttonType={buttonType} fontStyle={fontStyle} {...props}>
       {name}
     </StyledButton>
   );
