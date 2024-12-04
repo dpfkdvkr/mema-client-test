@@ -22,6 +22,10 @@ const Container = styled.div`
   @media (max-width: 390px) {
     width: 100%;
   }
+
+  main {
+    padding: 0 16px;
+  }
 `;
 
 export default BasicLayout;
