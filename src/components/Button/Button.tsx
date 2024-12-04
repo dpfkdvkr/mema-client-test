@@ -2,31 +2,31 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 
-type Props = {
+type Props = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'buttonType' | 'fontStyle'> & {
   name: string;
   buttonType?: 'default' | 'square' | 'ghost';
   fontStyle?: 'bold' | 'normal' | 'thin';
-} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+};
 
 const Button = ({ name, buttonType = 'default', fontStyle = 'bold', ...props }: Props) => {
   return (
-    <StyledButton buttonType={buttonType} fontStyle={fontStyle} {...props}>
+    <StyledButton $buttonType={buttonType} $fontStyle={fontStyle} {...props}>
       {name}
     </StyledButton>
   );
 };
 
 const StyledButton = styled.button<{
-  buttonType: 'default' | 'square' | 'ghost';
-  fontStyle: 'bold' | 'normal' | 'thin';
+  $buttonType: 'default' | 'square' | 'ghost';
+  $fontStyle: 'bold' | 'normal' | 'thin';
 }>`
   width: 100%;
   height: 55px;
   cursor: pointer;
   border: 1px solid;
 
-  ${({ buttonType, theme }) => {
-    switch (buttonType) {
+  ${({ $buttonType, theme }) => {
+    switch ($buttonType) {
       case 'ghost':
         return css`
           background-color: transparent;
@@ -81,8 +81,8 @@ const StyledButton = styled.button<{
     }
   }}
 
-  ${({ fontStyle, theme }) => {
-    switch (fontStyle) {
+  ${({ $fontStyle, theme }) => {
+    switch ($fontStyle) {
       case 'thin':
         return css`
           ${theme.fonts.text.lg};
