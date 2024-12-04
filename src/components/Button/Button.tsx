@@ -21,7 +21,7 @@ const StyledButton = styled.button<{
   $fontStyle: 'bold' | 'normal' | 'thin';
 }>`
   width: 100%;
-  height: 55px;
+  height: 50px;
   cursor: pointer;
   border: 1px solid;
 
