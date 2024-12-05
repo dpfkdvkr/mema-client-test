@@ -11,16 +11,16 @@ type ModalWrapperProps = {
 
 const ModalWrapper = ({ children, buttons, width = '100%', ...props }: ModalWrapperProps) => {
   return (
-    <StyledInputWrapper $width={width} {...props}>
+    <ModalBox $width={width} {...props}>
       <ModalContent>{children}</ModalContent>
       {buttons && <Buttons>{buttons}</Buttons>}
-    </StyledInputWrapper>
+    </ModalBox>
   );
 };
 
 export default ModalWrapper;
 
-const StyledInputWrapper = styled.div<{ $width: string | number }>`
+const ModalBox = styled.div<{ $width: string | number }>`
   display: flex;
   flex-direction: column;
   padding: 40px 16px 16px 16px;
@@ -28,6 +28,7 @@ const StyledInputWrapper = styled.div<{ $width: string | number }>`
   border-radius: 15px;
   background: white;
   box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
 `;
 
 const ModalContent = styled.div`
