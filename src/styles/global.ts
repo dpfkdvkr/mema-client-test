@@ -16,6 +16,9 @@ const GlobalStyle = createGlobalStyle`
         padding: 0;
         font-family: 'Pretendard Variable', sans-serif;
     }
+    p{
+        margin:0;
+    }
 `;
 
 export default GlobalStyle;
