@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { ChevronLeft } from 'react-feather';
 import { useRouter } from 'next/navigation';
 import Logo from '/public/svgs/common/logo.svg';
-import Share from '/public/svgs/common/share.svg';
+import { ExternalLink } from 'react-feather';
 import Link from 'next/link';
 
 type Props = {
@@ -25,7 +25,7 @@ function TabBar({ leftType = 'backBtn', rightType, onClick }: Props) {
       ) : (
         <ChevronLeft onClick={() => router.back()} />
       )}
-      {rightType === 'shareBtn' && <Share onClick={onClick} />}
+      {rightType === 'shareBtn' && <ExternalLink onClick={onClick} />}
     </Container>
   );
 }
