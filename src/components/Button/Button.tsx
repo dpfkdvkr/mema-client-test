@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 
 type Props = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'buttonType' | 'fontStyle'> & {
   name: string;
-  buttonType?: 'default' | 'square' | 'ghost';
+  buttonType?: 'default' | 'square' | 'ghost' | 'gray';
   fontStyle?: 'bold' | 'normal' | 'thin';
 };
 
@@ -17,7 +17,7 @@ const Button = ({ name, buttonType = 'default', fontStyle = 'bold', ...props }: 
 };
 
 const StyledButton = styled.button<{
-  $buttonType: 'default' | 'square' | 'ghost';
+  $buttonType: 'default' | 'square' | 'ghost' | 'gray';
   $fontStyle: 'bold' | 'normal' | 'thin';
 }>`
   width: 100%;
@@ -27,6 +27,19 @@ const StyledButton = styled.button<{
 
   ${({ $buttonType, theme }) => {
     switch ($buttonType) {
+      case 'gray':
+        return css`
+          background-color: ${theme.colors.gray[5]};
+          border-radius: ${theme.borderRadius.medium};
+          border-color: transparent;
+          color: ${theme.colors.white};
+          &:hover {
+            background-color: ${theme.colors.gray[4]};
+          }
+          &:active {
+            background-color: ${theme.colors.gray[4]};
+          }
+        `;
       case 'ghost':
         return css`
           background-color: transparent;
