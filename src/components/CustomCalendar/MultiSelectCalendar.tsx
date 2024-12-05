@@ -1,4 +1,3 @@
-/* eslint react/no-unused-class-component-methods: "off" */
 'use client';
 import React, { useState } from 'react';
 import Calendar from 'react-calendar';
