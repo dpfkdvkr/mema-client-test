@@ -93,9 +93,11 @@ const StyledCalendarWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 100%;
 
   /* Calendar 전체 영역 */
   .react-calendar {
+    width: 100%;
     border: none;
     padding: 11px 11px;
     background-color: ${({ theme }) => theme.colors.gray[6]};
