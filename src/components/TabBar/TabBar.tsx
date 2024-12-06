@@ -11,19 +11,21 @@ type Props = {
   leftType?: 'logo' | 'backBtn';
   rightType?: 'shareBtn';
   onClick?: () => void;
+  onClickBack?: () => void;
 };
 
-function TabBar({ leftType = 'backBtn', rightType, onClick }: Props) {
+function TabBar({ leftType = 'backBtn', rightType, onClick, onClickBack }: Props) {
   const router = useRouter();
+  const handleBack = onClickBack || (() => router.back());
 
   return (
     <Container>
       {leftType === 'logo' ? (
         <Link href={'/'}>
-          <Logo />
+          <Logo fill="#E0E0E0" />
         </Link>
       ) : (
-        <ChevronLeft onClick={() => router.back()} />
+        <ChevronLeft onClick={handleBack} />
       )}
       {rightType === 'shareBtn' && <ExternalLink onClick={onClick} />}
     </Container>
