@@ -1,11 +1,11 @@
 'use client';
 import React from 'react';
-import BillCreateTabBar from '../BillCreateTabBar';
 import styled from 'styled-components';
 import Input from '@/components/Input';
 import InputWrapper from '@/components/Input/InputWrapper';
 import { useInputState } from '@/hooks/useInputState';
 import Button from '@/components/Button';
+import TabBar from '@/components/TabBar';
 
 type Props = {
   onClickBack: () => void;
@@ -17,7 +17,7 @@ const BillCreatePrice = ({ onClickBack, onClickStep2 }: Props) => {
 
   return (
     <Container>
-      <BillCreateTabBar onClick={onClickBack} />
+      <TabBar onClickBack={onClickBack} />
       <p className="billCreatePriceTitle">
         <b>봉추찜닭</b>에서의
         <br />
