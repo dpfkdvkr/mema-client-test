@@ -2,6 +2,7 @@
 import Button from '@/components/Button';
 import Modal from '@/components/Modal';
 import { DisabledText, Emphasize, Text } from '@/components/Modal/modalTypography';
+import PlaceDrawer from '@/features/meet/place/PlaceDrawer';
 import PlaceInput from '@/features/meet/place/PlaceInput';
 import PlaceUserLocation from '@/features/meet/place/PlaceUserLocation';
 import useToggle from '@/lib/hooks/useToggle';
@@ -94,7 +95,7 @@ const PlacePage = () => {
         </div>
         <StyledButton name="위치 확정하기" onClick={toggleOpenModal} />
       </Container>
-
+      {/* <PlaceDrawer /> */}
       {isOpenModal && (
         <Modal
           type="OkCancel"
