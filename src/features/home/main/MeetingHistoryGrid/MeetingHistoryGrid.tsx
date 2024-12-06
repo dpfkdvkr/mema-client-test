@@ -3,29 +3,42 @@ import styled from 'styled-components';
 import MemberIconStack from '@/features/home/main/MemberIconStack';
 import { useRouter } from 'next/navigation';
 
-// 랜덤 퍼즐 및 색상 생성 함수
-const generateRandomMembers = (count: number) => {
-  const colors = ['blue', 'red', 'yellow', 'green', 'purple', 'black'];
-  return Array.from({ length: count }, () => ({
-    puzzleId: Math.floor(Math.random() * 12) + 1,
-    puzzleColor: colors[Math.floor(Math.random() * colors.length)],
-  }));
-};
-
-// 미팅 데이터 랜덤하게 5개씩 생성하도록 잠시 짜놓음
 const meetings = [
-  ...Array.from({ length: 5 }, (_, i) => ({
-    id: i + 1,
-    title: `곧 만나요! 미팅 ${i + 1}`,
+  {
+    id: 1,
+    title: '방어회중자모임',
     isActive: true,
-    members: generateRandomMembers(Math.floor(Math.random() * 8) + 3), // 3~10명
-  })),
-  ...Array.from({ length: 5 }, (_, i) => ({
-    id: i + 6,
-    title: `즐거웠어요! 미팅 ${i + 1}`,
+    members: [
+      { puzzleId: 1, puzzleColor: 'blue' },
+      { puzzleId: 2, puzzleColor: 'red' },
+      { puzzleId: 3, puzzleColor: 'yellow' },
+    ],
+  },
+  {
+    id: 3,
+    title: '15학번이즈백',
     isActive: false,
-    members: generateRandomMembers(Math.floor(Math.random() * 8) + 3), // 3~10명
-  })),
+    members: [
+      { puzzleId: 4, puzzleColor: 'green' },
+      { puzzleId: 5, puzzleColor: 'purple' },
+      { puzzleId: 6, puzzleColor: 'black' },
+    ],
+  },
+  {
+    id: 4,
+    title: '한강 치킨팟',
+    isActive: false,
+    members: [
+      { puzzleId: 4, puzzleColor: 'green' },
+      { puzzleId: 5, puzzleColor: 'purple' },
+      { puzzleId: 6, puzzleColor: 'black' },
+      { puzzleId: 7, puzzleColor: 'blue' },
+      { puzzleId: 8, puzzleColor: 'red' },
+      { puzzleId: 9, puzzleColor: 'yellow' },
+      { puzzleId: 10, puzzleColor: 'green' },
+      { puzzleId: 11, puzzleColor: 'purple' },
+    ],
+  },
 ];
 
 const MeetingHistoryGrid = () => {
