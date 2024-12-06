@@ -81,11 +81,10 @@ const PlacePage = () => {
   };
 
   const onFocusSearch = () => {
-    console.log('Input focused!');
-    // 원하는 작업 실행
+    // 원하는 작업 실행 Input focused!
     toggleFocusSearch();
   };
-  console.log(isFocusSearch);
+
   return (
     <>
       <Container>
