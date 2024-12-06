@@ -51,7 +51,9 @@ const PlaceInput = ({ isFocus, onFocus }: Props) => {
   );
 };
 
-const Container = styled.div<{ isFocus: boolean }>`
+const Container = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isFocus',
+})<{ isFocus: boolean }>`
   width: 390px;
   position: relative;
   @media (max-width: 390px) {
