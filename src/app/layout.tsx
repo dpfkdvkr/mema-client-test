@@ -1,3 +1,4 @@
+import ReactQueryProvider from '@/components/common/ReactQueryProvider';
 import ThemeProviderWrapper from '@/components/common/ThemeProviderWrapper';
 import GlobalStyle from '@/styles/global';
 
@@ -10,10 +11,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ko">
       <body>
-        <ThemeProviderWrapper>
-          <GlobalStyle />
-          {children}
-        </ThemeProviderWrapper>
+        <ReactQueryProvider>
+          <ThemeProviderWrapper>
+            <GlobalStyle />
+            {children}
+          </ThemeProviderWrapper>
+        </ReactQueryProvider>
       </body>
     </html>
   );
