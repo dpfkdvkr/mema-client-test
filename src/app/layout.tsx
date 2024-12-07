@@ -1,3 +1,4 @@
+import ReactQueryProvider from '@/components/common/ReactQueryProvider';
 import ThemeProviderWrapper from '@/components/common/ThemeProviderWrapper';
 import GlobalStyle from '@/styles/global';
 import Script from 'next/script';
@@ -15,10 +16,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.REACT_APP_MAP_KEY}`}
       ></Script>
       <body>
-        <ThemeProviderWrapper>
-          <GlobalStyle />
-          {children}
-        </ThemeProviderWrapper>
+        <ReactQueryProvider>
+          <ThemeProviderWrapper>
+            <GlobalStyle />
+            {children}
+          </ThemeProviderWrapper>
+        </ReactQueryProvider>
       </body>
     </html>
   );
