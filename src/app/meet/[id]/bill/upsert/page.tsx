@@ -6,7 +6,7 @@ import BillCreatePrice from '@/features/meet/bill/BillCreate/BillCreatePrice';
 import useToggle from '@/lib/hooks/useToggle';
 import React, { useState } from 'react';
 
-const BillCreatePage = () => {
+const BillUpsertPage = () => {
   const [current, setCurrent] = useState(0);
   const [isOpenModal, toggleOpenModal] = useToggle();
   const [isOpenConfirmModal, toggleOpenConfirmModal] = useToggle();
@@ -48,4 +48,4 @@ const BillCreatePage = () => {
   );
 };
 
-export default BillCreatePage;
+export default BillUpsertPage;
