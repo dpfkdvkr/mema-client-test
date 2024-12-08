@@ -13,12 +13,14 @@ export const mockMeetData = {
       nickname: '토끼', // 닉네임
       puzzleId: 1, // 프로필 퍼즐 아이디
       puzzleColor: 'red', // 프로필 퍼즐 색깔
+      isMe: true,
     },
     {
       userId: 2,
       nickname: '호랑이',
       puzzleId: 5,
       puzzleColor: 'blue',
+      isMe: false,
     },
   ],
 };

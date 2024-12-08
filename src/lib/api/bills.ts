@@ -26,43 +26,38 @@ export const getBills = async (meetId: number): Promise<AxiosResponse<Bills>> =>
 // };
 
 // 정산 생성
-export const createBill = async (data: {
+export const createBill = async ({
+  meetId,
+  data,
+}: {
   meetId: number;
-  content: string;
-  totalPrice: string;
-  peopleNumber: string;
-  payerIds: number[];
+  data: {
+    content: string;
+    totalPrice: number;
+    peopleNumber: number;
+    memberIds: number[];
+  };
 }) => {
-  console.log(`Mock API 호출: /meets/${data.meetId}/charge, data:${data}`);
+  console.log(`Mock API 호출: /meets/${meetId}/charge CREATE, data:${data}`);
 
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
         status: 201,
-        message: '정상적으로 청구서가 생성되었습니다.',
-        data: {
-          billId: 1, // 생성된 청구서 ID
-          meetId: data.meetId,
-          content: data.content,
-          totalPrice: data.totalPrice,
-          peopleNumber: data.peopleNumber,
-          payerIds: data.payerIds,
-        },
+        message: '정상적으로 정산이 생성되었습니다.',
+        data,
       });
     }, 500);
   });
 };
-// export const createBill = async (data: {
-//   meetId: number;
-//   content: string;
-//   totalPrice: string;
-//   peopleNumber: string;
-//   payerIds: number[];
-// }) => {
-//   await defaultAxios.post(`/meets/${data.meetId}/charge`, {
-//     content: data.content,
-//     totalPrice: data.totalPrice,
-//     peopleNumber: data.peopleNumber,
-//     payerIds: data.payerIds,
-//   });
+// export const createBill = async (
+//   meetId: number,
+//   data: {
+//     content: string;
+//     totalPrice: string;
+//     peopleNumber: string;
+//     memberIds: number[];
+//   },
+// ) => {
+//   await defaultAxios.post(`/meets/${meetId}/charge`, data);
 // };

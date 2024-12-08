@@ -11,5 +11,6 @@ export type Meet = {
     nickname: string; // 닉네임
     puzzleId: number; // 프로필 퍼즐 아이디
     puzzleColor: string; // 프로필 퍼즐 색깔
+    isMe: boolean; // 본인인지아닌지
   }[];
 };
