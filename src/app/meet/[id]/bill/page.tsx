@@ -12,12 +12,14 @@ import { Bill, Bills } from '@/types/bills';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';
 import { useParams, useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import html2canvas from 'html2canvas';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 function BillPage() {
   const router = useRouter();
   const params = useParams();
+  const captureRef = useRef<HTMLDivElement>(null);
   const [userName, setUserName] = useState('메마만세');
   const [chargeId, setChargeId] = useState(0);
   const [isOpenShareModal, toggleOpenShareModal] = useToggle();
@@ -50,8 +52,17 @@ function BillPage() {
     },
   });
 
-  const onClickShare = () => {
-    //캡쳐로직구현
+  const onClickShare = async () => {
+    if (captureRef.current) {
+      const canvas = await html2canvas(captureRef.current);
+      const image = canvas.toDataURL('image/png');
+      // console.log(image);
+      const link = document.createElement('a');
+      link.href = image;
+      link.download = 'capture.png';
+      link.click();
+    }
+
     toggleOpenShareModal();
   };
 
@@ -68,7 +79,7 @@ function BillPage() {
   };
 
   return (
-    <>
+    <div ref={captureRef}>
       <TabBar rightType="shareBtn" onClick={onClickShare} />
       {bills ? (
         <>
@@ -141,7 +152,7 @@ function BillPage() {
           <Text>정산이 삭제되었어요.</Text>
         </Modal>
       )}
-    </>
+    </div>
   );
 }
 
