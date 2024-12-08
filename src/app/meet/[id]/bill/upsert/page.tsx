@@ -20,7 +20,6 @@ const BillUpsertPage = () => {
   const router = useRouter();
   const [current, setCurrent] = useState(0);
   const [isAllSelected, setIsAllSelected] = useState(false);
-  // const [chargeId, setChargeId] = useState<string | null>(null);
   const [createData, setCreateData] = useState<{
     content: string;
     totalPrice: number;

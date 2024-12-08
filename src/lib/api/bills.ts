@@ -53,6 +53,28 @@ export const getBill = async ({
 //   return await defaultAxios.get(`/meets/${meetId}/charge/${chargeId}`);
 // };
 
+// 정산 나의피정산조회
+export const getBillPayfor = async (meetId: number): Promise<AxiosResponse<Bills>> => {
+  console.log(`Mock API 호출: /meets/${meetId}/charge/payfor`);
+  return new Promise<AxiosResponse<Bills>>((resolve) =>
+    setTimeout(
+      () =>
+        resolve({
+          data: mockbillsData,
+          status: 200,
+          statusText: 'OK',
+          headers: {},
+          config: {},
+          request: {},
+        } as AxiosResponse<Bills>),
+      500,
+    ),
+  );
+};
+// export const getBillPayfor = async (meetId: number) => {
+//   return await defaultAxios.get(`/meets/${meetId}/charge/payfor`);
+// };
+
 // 정산 생성
 export const createBill = async ({
   meetId,
@@ -114,4 +136,30 @@ export const updateBill = async ({
 //   data: { content: string; totalPrice: number; peopleNumber: number; memberIds: number[] };
 // }) => {
 //   await defaultAxios.patch(`/meets/${meetId}/charge/${chargeId}`, data);
+// };
+
+// 정산 삭제
+export const deleteBill = async ({
+  meetId,
+  chargeId,
+}: {
+  meetId: number;
+  chargeId: number;
+}): Promise<AxiosResponse> => {
+  console.log(`Mock API 호출: /meets/${meetId}/charge/${chargeId} DELETE`);
+  return new Promise<AxiosResponse>((resolve) =>
+    setTimeout(() => {
+      resolve({
+        data: null,
+        status: 204,
+        statusText: 'OK',
+        headers: {},
+        config: {},
+        request: {},
+      } as AxiosResponse);
+    }, 500),
+  );
+};
+// export const deleteBill = async ({ meetId, chargeId }: { meetId: number; chargeId: number }) => {
+//   await defaultAxios.delete(`/meets/${meetId}/charge/${chargeId}`);
 // };
