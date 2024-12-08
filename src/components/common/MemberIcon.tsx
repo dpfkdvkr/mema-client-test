@@ -34,6 +34,8 @@ type MemberIconProps = {
   puzzleColor: string;
   size: number;
   showShadow?: boolean;
+  disabled?: boolean;
+  selected?: boolean;
 };
 
 const MemberIcon: React.FC<MemberIconProps> = ({
@@ -41,6 +43,8 @@ const MemberIcon: React.FC<MemberIconProps> = ({
   puzzleColor,
   size = 40,
   showShadow = false,
+  disabled = false,
+  selected = false,
 }) => {
   const IconComponent = iconMap[puzzleId];
   if (!IconComponent) {
@@ -48,7 +52,13 @@ const MemberIcon: React.FC<MemberIconProps> = ({
   }
 
   return (
-    <IconWrapper $size={size} $color={puzzleColor} $showShadow={showShadow}>
+    <IconWrapper
+      $size={size}
+      $color={puzzleColor}
+      $showShadow={showShadow}
+      $disabled={disabled}
+      $selected={selected}
+    >
       <IconComponent />
     </IconWrapper>
   );
@@ -56,7 +66,13 @@ const MemberIcon: React.FC<MemberIconProps> = ({
 
 export default MemberIcon;
 
-const IconWrapper = styled.div<{ $size: number; $color: string; $showShadow: boolean }>`
+const IconWrapper = styled.div<{
+  $size: number;
+  $color: string;
+  $showShadow: boolean;
+  $disabled: boolean;
+  $selected: boolean;
+}>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -66,6 +82,9 @@ const IconWrapper = styled.div<{ $size: number; $color: string; $showShadow: boo
   ${({ $showShadow }) =>
     $showShadow && `box-shadow: 1.667px 0px 8.333px 0px rgba(0, 0, 0, 0.06);`} /* 그림자 */
 
+  opacity: ${({ $disabled }) => ($disabled ? 0.35 : 1)};
+  border: ${({ $selected, theme }) =>
+    $selected ? `2px solid ${theme.colors.primary.default}` : 'none'};
   svg {
     width: 100%;
     height: 100%;

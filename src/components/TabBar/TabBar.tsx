@@ -4,12 +4,12 @@ import styled from 'styled-components';
 import { ChevronLeft } from 'react-feather';
 import { useRouter } from 'next/navigation';
 import Logo from '/public/svgs/common/logo.svg';
-import { ExternalLink } from 'react-feather';
+import { ExternalLink, Settings } from 'react-feather';
 import Link from 'next/link';
 
 type Props = {
   leftType?: 'logo' | 'backBtn';
-  rightType?: 'shareBtn';
+  rightType?: 'shareBtn' | 'settingBtn';
   onClick?: () => void;
   onClickBack?: () => void;
 };
@@ -28,6 +28,7 @@ function TabBar({ leftType = 'backBtn', rightType, onClick, onClickBack }: Props
         <ChevronLeft onClick={handleBack} />
       )}
       {rightType === 'shareBtn' && <ExternalLink onClick={onClick} />}
+      {rightType === 'settingBtn' && <SettingsIcon onClick={onClick} />}
     </Container>
   );
 }
@@ -40,6 +41,10 @@ const Container = styled.div`
   svg {
     cursor: pointer;
   }
+`;
+
+const SettingsIcon = styled(Settings)`
+  stroke: ${({ theme }) => theme.colors.gray[4]};
 `;
 
 export default TabBar;

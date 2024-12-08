@@ -3,28 +3,20 @@ import MemaIcon from '@/assets/icons/svg/mema.svg';
 import SelectedMemaIcon from '@/assets/icons/svg/memaFilled.svg';
 import CalendarIcon from '@/assets/icons/svg/calendar.svg';
 import SelectedCalendarIcon from '@/assets/icons/svg/calendarFilled.svg';
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
-const BottomNavigation = () => {
-  const [activeTab, setActiveTab] = useState<'calendar' | 'mema'>('calendar');
-
+type Props = {
+  tab?: 'calendar' | 'mypage';
+};
+const BottomNavigation = ({ tab = 'calendar' }: Props) => {
+  const router = useRouter();
   return (
     <Container>
-      <NavItem
-        onClick={() => {
-          setActiveTab('calendar');
-          alert('캘린더 클릭');
-        }}
-      >
-        {activeTab === 'calendar' ? <SelectedCalendarIcon /> : <CalendarIcon />}
+      <NavItem onClick={() => router.push('/')}>
+        {tab === 'calendar' ? <SelectedCalendarIcon /> : <CalendarIcon />}
       </NavItem>
-      <NavItem
-        onClick={() => {
-          setActiveTab('mema');
-          alert('메마 클릭');
-        }}
-      >
-        {activeTab === 'mema' ? <SelectedMemaIcon /> : <MemaIcon />}
+      <NavItem onClick={() => router.push('/mypage')}>
+        {tab === 'mypage' ? <SelectedMemaIcon /> : <MemaIcon />}
       </NavItem>
     </Container>
   );
@@ -37,7 +29,8 @@ const Container = styled.div`
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 390px;
+  width: 100%;
+  max-width: 390px;
   background-color: white;
   border-top: 1px solid ${({ theme }) => theme.colors.gray[5]};
   z-index: ${({ theme }) => theme.zIndex.navigation};
