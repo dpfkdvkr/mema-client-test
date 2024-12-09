@@ -4,11 +4,14 @@ import styled from 'styled-components';
 import Button from '@/components/Button';
 import TabBar from '@/components/TabBar';
 import { formatDate } from '@/lib/utils/formatDate';
-import StaticCalendar from '@/components/CustomCalendar/StaticCalendar';
 import { useRouter } from 'next/navigation';
+import CustomCalendar from '@/components/CustomCalendar/CustomCalendar';
+
+type MemberAuthorization = 'member' | 'host';
 
 type VoteDatesProps = {
-  type: 'complete' | 'inProgress';
+  type: 'inProgress' | 'needReVote' | 'needComplete' | 'complete';
+  auth: MemberAuthorization;
   onClickBack: () => void;
   onClickConfirmDate: () => void;
   selectedDates: Date[];
@@ -18,6 +21,7 @@ type VoteDatesProps = {
 
 const CalendarView = ({
   type = 'inProgress',
+  auth = 'member',
   onClickBack,
   onClickConfirmDate,
   selectedDates,
@@ -29,23 +33,68 @@ const CalendarView = ({
     <>
       <Container>
         <TabBar onClick={onClickBack} />
-        {type === 'complete' && <p className="title">11월 29일에 만나요!</p>}
-        {type === 'inProgress' && (
-          <p className="title">
-            만남이 가능한 날짜를
-            <br />
-            모두 선택해주세요!
-          </p>
-        )}
+        <TextContainer>
+          {type === 'inProgress' && (
+            <p className="title">
+              다른 미팅원들이
+              <br />
+              투표중이에요
+            </p>
+          )}
+          {type === 'needReVote' && auth === 'host' && (
+            <>
+              <p className="title">모두가 가능한 날짜가 없어요</p>
+              <p className="description">미팅장이 날짜를 선택하거나, 재투표를 할 수 있어요</p>
+            </>
+          )}
+          {type === 'needReVote' && auth === 'member' && (
+            <>
+              <p className="title">미팅장이 만나는 날짜를 선택해야 해요</p>
+              <p className="description">미팅장이 날짜를 선택하거나, 재투표를 할 수 있어요</p>
+            </>
+          )}
+          {type === 'needComplete' && auth === 'host' && (
+            <>
+              <p className="title">만나는 날짜를 선택해야 해요.</p>
+              <p className="description">미팅장이 날짜를 선택하거나, 재투표를 할 수 있어요</p>
+            </>
+          )}
+          {type === 'complete' && <p className="title">11월 29일에 만나요!</p>}
+        </TextContainer>
 
-        <StaticCalendar
-          startDay={new Date()}
-          allSelectedDates={selectedDates}
-          mySelectedDates={selectedDates}
-          maxSelectableDate={60}
-          onClick={(date) => onChangeDate(date)}
-          clickedDate={clickedDate}
-        />
+        {((type === 'needReVote' && auth === 'member') || type === 'inProgress') && (
+          <CustomCalendar
+            mode="view"
+            voteStartDay={new Date()}
+            allSelectedDates={selectedDates}
+            mySelectedDates={[selectedDates[1]]}
+            maxSelectableDate={60}
+            onClick={(date) => onChangeDate(date)}
+            clickedDate={clickedDate}
+          />
+        )}
+        {type === 'needReVote' && auth === 'host' && (
+          <CustomCalendar
+            mode="complete"
+            voteStartDay={new Date()}
+            allSelectedDates={selectedDates}
+            mySelectedDates={[selectedDates[1]]}
+            maxSelectableDate={60}
+            onClick={(date) => onChangeDate(date)}
+            clickedDate={clickedDate}
+          />
+        )}
+        {type === 'complete' && (
+          <CustomCalendar
+            mode="result"
+            voteStartDay={new Date()}
+            allSelectedDates={selectedDates}
+            mySelectedDates={[selectedDates[1]]}
+            maxSelectableDate={60}
+            onClick={(date) => onChangeDate(date)}
+            clickedDate={clickedDate}
+          />
+        )}
 
         <StyledDiv>
           {clickedDate ? (
@@ -63,7 +112,10 @@ const CalendarView = ({
             </p>
           )}
         </StyledDiv>
-
+        {/*<>*/}
+        {/*  <span className="emphasize-desc">{formatDate(clickedDate, "MM월 DD일")}</span>*/}
+        {/*  에 만날 수 있는 사람은 아직 없어요.*/}
+        {/*</>*/}
         {type === 'inProgress' && (
           <ButtonContainer>
             <Button
@@ -91,9 +143,18 @@ export default CalendarView;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const TextContainer = styled.div`
+  margin: 20px 0 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   .title {
     ${({ theme }) => theme.fonts.title.md};
-    margin: 20px 0 20px;
+  }
+  .description {
+    ${({ theme }) => theme.fonts.text.lg};
   }
 `;
 
@@ -105,7 +166,6 @@ const StyledDiv = styled.div`
   color: black;
   ${({ theme }) => theme.fonts.text.xl};
   .grayish-desc {
-    ${({ theme }) => theme.fonts.text.xl};
     color: ${({ theme }) => theme.colors.gray[2]};
   }
   .emphasize-desc {
@@ -114,9 +174,6 @@ const StyledDiv = styled.div`
   }
   .bold-desc {
     ${({ theme }) => theme.fonts.title.xs};
-  }
-  .btnGroup {
-    display: flex;
   }
 `;
 

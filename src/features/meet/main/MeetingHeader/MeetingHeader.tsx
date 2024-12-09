@@ -2,6 +2,7 @@ import MemberIconStack from '@/features/home/main/MemberIconStack';
 import React from 'react';
 import styled from 'styled-components';
 import { Share2 } from 'react-feather';
+import CopyToClipboard from 'react-copy-to-clipboard';
 
 const tmpMembers = [
   { puzzleId: 1, puzzleColor: 'blue' },
@@ -11,12 +12,19 @@ const tmpMembers = [
   { puzzleId: 5, puzzleColor: 'purple' },
 ];
 
-const MeetingHeader = () => {
+interface Props {
+  onClickShare: () => void;
+  joinCode: string;
+}
+
+const MeetingHeader = ({ onClickShare, joinCode }: Props) => {
   return (
     <Container>
       <SpaceBetweenRow>
         <p className="title">찜닭머그러가자</p>
-        <ShareIcon onClick={() => alert('기능 미정의')} />
+        <CopyToClipboard text={joinCode} onCopy={onClickShare}>
+          <ShareIcon />
+        </CopyToClipboard>
       </SpaceBetweenRow>
       <Row>
         <p className="description">인원 {tmpMembers.length}명</p>
