@@ -6,58 +6,88 @@ import { formatDate } from '@/lib/utils/formatDate';
 import styled from 'styled-components';
 import { ChevronLeft, ChevronRight } from 'react-feather';
 
-interface CalendarProps {
-  startDay?: Date;
-  selectedDates: Date[];
-  onChangeSelected: (selectedDates: Date[]) => void;
-  maxSelectableDate: number;
+type CalendarMode = 'select' | 'view' | 'complete' | 'result';
+// select : 다중 선택 가능한 모드
+// view : 입력 현황 - 최종 날짜 선택 불가능
+// complete : 입력 현황 - 최종 날짜 선택 가능 (for only host)
+// result : 최종 날짜 선택 결과
+
+interface CustomCalendarProps {
+  mode: CalendarMode;
+  voteStartDay: Date;
+  onClick?: (date: Date) => void;
+  onChangeSelected?: (dates: Date[]) => void;
+  maxSelectableDate?: number;
+  allSelectedDates?: Date[];
+  mySelectedDates?: Date[];
+  clickedDate?: Date | null;
 }
 
-const MultiSelectCalendar: React.FC<CalendarProps> = ({
-  startDay = new Date(),
-  selectedDates,
+const CustomCalendar: React.FC<CustomCalendarProps> = ({
+  mode,
+  voteStartDay,
+  onClick,
   onChangeSelected,
   maxSelectableDate = 60,
+  allSelectedDates = [],
+  mySelectedDates = [],
+  clickedDate = null,
 }) => {
-  const MIN_DATE = new Date(startDay.getFullYear(), startDay.getMonth(), startDay.getDate() + 1);
+  console.log('allSelectedDates : ', allSelectedDates);
+  console.log('mySelectedDates : ', mySelectedDates);
+  const MIN_DATE = new Date(
+    voteStartDay.getFullYear(),
+    voteStartDay.getMonth(),
+    voteStartDay.getDate() + 1,
+  );
   const MAX_DATE = new Date(
     MIN_DATE.getFullYear(),
     MIN_DATE.getMonth(),
     MIN_DATE.getDate() + maxSelectableDate - 1,
   );
 
-  const [calendarDate, setCalendarDate] = useState<Date>(MIN_DATE);
+  const [firstDayOfMonth, setFirstDayOfMonth] = useState<Date>(
+    new Date(voteStartDay.getFullYear(), voteStartDay.getMonth(), 1),
+  );
 
-  const isPrevDisabled =
-    calendarDate.getFullYear() === MIN_DATE.getFullYear() &&
-    calendarDate.getMonth() === MIN_DATE.getMonth();
-  const isNextDisabled =
-    calendarDate.getFullYear() === MAX_DATE.getFullYear() &&
-    calendarDate.getMonth() === MAX_DATE.getMonth();
+  const isPrevMonthDisabled =
+    firstDayOfMonth.getFullYear() === MIN_DATE.getFullYear() &&
+    firstDayOfMonth.getMonth() === MIN_DATE.getMonth();
+  const isNextMonthDisabled =
+    firstDayOfMonth.getFullYear() === MAX_DATE.getFullYear() &&
+    firstDayOfMonth.getMonth() === MAX_DATE.getMonth();
 
   const handleActiveStartDateChange = ({ activeStartDate }: { activeStartDate: Date | null }) => {
     if (!activeStartDate) return;
-    setCalendarDate(activeStartDate);
+    setFirstDayOfMonth(activeStartDate);
   };
 
   const handleDateClick = (clickedDate: Date) => {
-    // clickedDate가 이미 선택된 날짜인지 확인
-    const isAlreadySelected = selectedDates.some(
-      (selectedDate) => selectedDate.toDateString() === clickedDate.toDateString(),
-    );
+    if (mode === 'select' && onChangeSelected) {
+      const isAlreadySelected = checkIfDateSelected(clickedDate);
 
-    const newDates = isAlreadySelected
-      ? selectedDates.filter(
-          (selectedDate) => selectedDate.toDateString() !== clickedDate.toDateString(),
-        )
-      : [...selectedDates, clickedDate];
+      // 클릭한 날짜가 선택된 날짜이면 선택 해제
+      const newSelectedDates = isAlreadySelected
+        ? mySelectedDates.filter(
+            (selectedDate) => selectedDate.toDateString() !== clickedDate.toDateString(),
+          )
+        : [...mySelectedDates, clickedDate];
 
-    // 업데이트된 날짜 리스트를 부모 컴포넌트에 전달
-    onChangeSelected(newDates);
+      onChangeSelected(newSelectedDates);
+    }
+    if (onClick) {
+      onClick(clickedDate);
+    }
   };
 
-  const isSelectedDate = (date: Date) => {
-    return selectedDates.some(
+  const checkIfDateSelected = (date: Date) => {
+    return mySelectedDates.some(
+      (selectedDate) => selectedDate.toDateString() === date.toDateString(),
+    );
+  };
+
+  const checkIfDateSelectedByOthers = (date: Date) => {
+    return allSelectedDates.some(
       (selectedDate) => selectedDate.toDateString() === date.toDateString(),
     );
   };
@@ -65,27 +95,42 @@ const MultiSelectCalendar: React.FC<CalendarProps> = ({
   return (
     <StyledCalendarWrapper>
       <Calendar
-        value={calendarDate}
+        value={firstDayOfMonth}
         calendarType="iso8601"
         locale="en-US"
-        formatDay={(locale, date) => formatDate(date, 'DD')}
-        formatMonthYear={(locale, date) => date.toLocaleDateString('en-US', { month: 'long' })}
+        formatDay={(_, date) => formatDate(date, 'DD')}
+        formatMonthYear={(_, date) =>
+          date.toLocaleDateString('en-US', { month: 'long' }).toLowerCase()
+        }
         showNeighboringMonth={false}
         next2Label={null}
         prev2Label={null}
-        prevLabel={<StyledChevronLeft disabled={isPrevDisabled} />}
-        nextLabel={<StyledChevronRight disabled={isNextDisabled} />}
+        prevLabel={<StyledChevronLeft disabled={isPrevMonthDisabled} />}
+        nextLabel={<StyledChevronRight disabled={isNextMonthDisabled} />}
         onActiveStartDateChange={handleActiveStartDateChange}
         minDate={MIN_DATE}
         maxDate={MAX_DATE}
         onClickDay={handleDateClick}
-        tileClassName={({ date }) => (isSelectedDate(date) ? 'selected' : '')}
+        tileClassName={({ date }) => {
+          if (mode === 'select' || mode === 'view') {
+            if (checkIfDateSelectedByOthers(date)) return 'grayish-selected';
+            if (checkIfDateSelected(date)) return 'selected';
+          } else if (mode === 'complete') {
+            if (date.toDateString() === clickedDate?.toDateString()) return 'greenish-selected';
+            if (checkIfDateSelected(date)) return 'selected';
+            if (checkIfDateSelectedByOthers(date)) return 'grayish-selected';
+          } else if (mode === 'result') {
+            if (checkIfDateSelected(date)) return 'selected';
+            if (checkIfDateSelectedByOthers(date)) return 'grayish-selected';
+          }
+          return '';
+        }}
       />
     </StyledCalendarWrapper>
   );
 };
 
-export default MultiSelectCalendar;
+export default CustomCalendar;
 
 const StyledCalendarWrapper = styled.div`
   display: flex;
@@ -199,6 +244,18 @@ const StyledCalendarWrapper = styled.div`
   /* 선택된 항목 */
   .react-calendar__tile.selected {
     background-color: ${({ theme }) => theme.colors.primary.default} !important;
+    color: white !important;
+    border-radius: 10px;
+  }
+
+  .react-calendar__tile.grayish-selected {
+    background-color: ${({ theme }) => theme.colors.gray[5]} !important;
+    color: black !important;
+    border-radius: 10px;
+  }
+
+  .react-calendar__tile.greenish-selected {
+    background-color: ${({ theme }) => theme.colors.green} !important;
     color: white !important;
     border-radius: 10px;
   }

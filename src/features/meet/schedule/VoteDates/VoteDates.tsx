@@ -2,9 +2,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import Button from '@/components/Button';
-import MultiSelectCalendar from '@/components/CustomCalendar/MultiSelectCalendar';
 import TabBar from '@/components/TabBar';
 import { formatDate } from '@/lib/utils/formatDate';
+import CustomCalendar from '@/components/CustomCalendar/CustomCalendar';
 
 type VoteDatesProps = {
   type: 'create' | 'edit';
@@ -25,17 +25,16 @@ const VoteDates = ({
     <>
       <Container>
         <TabBar onClick={onClickBack} />
-        {(type === 'create' || type === 'edit') && (
-          <p className="title">
-            만남이 가능한 날짜를
-            <br />
-            모두 선택해주세요!
-          </p>
-        )}
+        <p className="title">
+          만남이 가능한 날짜를
+          <br />
+          모두 선택해주세요!
+        </p>
 
-        <MultiSelectCalendar
-          startDay={new Date()}
-          selectedDates={selectedDates}
+        <CustomCalendar
+          mode="select"
+          voteStartDay={new Date()}
+          mySelectedDates={selectedDates}
           maxSelectableDate={60}
           onChangeSelected={(dates) => onChangeDates(dates)}
         />

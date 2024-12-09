@@ -5,11 +5,14 @@ import { useInputState } from '@/hooks/useInputState';
 import Modal from '@/components/Modal';
 import { useRouter } from 'next/navigation';
 import useToggle from '@/lib/hooks/useToggle';
-import AccountInputs from '@/features/account/signup/AccountInputs';
 import NicknameInput from '@/features/account/signup/NicknameInput';
 import TabBar from '@/components/TabBar';
 import { Text } from '@/components/Modal/modalTypography';
 import TitleWithDescription from '@/components/common/TitleWithDescription';
+import EmailVerificationInputs from '@/features/account/EmailVerificationInputs';
+import styled from 'styled-components';
+import Button from '@/components/Button';
+import PasswordInput from '@/features/account/PasswordInput';
 
 const SignupPage = () => {
   const router = useRouter();
@@ -25,16 +28,34 @@ const SignupPage = () => {
     setCurrentStep((prev) => ++prev);
   };
 
+  const [isVerified, setVerification] = useState(false);
+  const handleRequestVerification = () => {
+    console.log('이메일 인증 요청 보내기');
+    setVerification(!isVerified);
+  };
+
+  const handleVerifyCode = () => {
+    console.log('인증 코드 검증');
+    setVerification(!isVerified);
+  };
+
   const steps = [
     {
       id: 1,
       content: (
-        <AccountInputs
-          onClickNext={next}
-          email={email}
-          verificationCode={verificationCode}
-          password={password}
-        />
+        <>
+          <Container>
+            <EmailVerificationInputs
+              onClickRequestVerification={handleRequestVerification}
+              onClickVerifyCode={handleVerifyCode}
+              email={email}
+              verificationCode={verificationCode}
+              isVerified={isVerified}
+            />
+            <PasswordInput password={password} />
+          </Container>
+          <StyledButton name="다음으로" disabled={!isVerified} onClick={next} />
+        </>
       ),
       description: '서비스를 이용하실 이메일과 비밀번호를 알려주세요!',
     },
@@ -75,3 +96,15 @@ const SignupPage = () => {
 };
 
 export default SignupPage;
+
+const StyledButton = styled(Button)`
+  position: absolute;
+  bottom: 34px;
+  width: calc(100% - 32px);
+`;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+`;

@@ -62,10 +62,9 @@ const AccountInputs: React.FC<AccountInputsProps> = ({
             onFocus={verificationCode.handleFocus}
             onBlur={verificationCode.handleBlur}
           />
-          <VerificationButton disabled={true} onClick={handleVerifyCode}>
-            확인
+          <VerificationButton disabled={isVerify} onClick={handleVerifyCode}>
+            {isVerify ? '인증 완료' : '확인'}
           </VerificationButton>
-          {/*<VerificationButton>인증 완료</VerificationButton>*/}
         </InputWrapper>
         <InputWrapper isFocused={password.isFocused} isEmpty={password.isEmpty}>
           <Label isFocused={password.isFocused} isEmpty={password.isEmpty}>
@@ -106,20 +105,14 @@ const Container = styled.div`
 
 const VerificationButton = styled.button`
   ${({ theme }) => theme.fonts.text.sm};
-  color: white;
-  background-color: ${({ theme }) => theme.colors.primary.default};
   border-radius: 15px;
-  border: none;
+  border: 1px solid ${({ theme }) => theme.colors.gray[4]};
+  color: ${({ theme }) => theme.colors.gray[4]};
+  background-color: white;
   padding: 4px 10px;
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.primary.lighter};
-  }
-  &:active {
-    background-color: ${({ theme }) => theme.colors.primary.darker};
-  }
   &:disabled {
-    background-color: white;
-    color: ${({ theme }) => theme.colors.gray[4]};
-    border: 1px solid ${({ theme }) => theme.colors.gray[4]};
+    border: none;
+    background-color: ${({ theme }) => theme.colors.primary.default};
+    color: white;
   }
 `;

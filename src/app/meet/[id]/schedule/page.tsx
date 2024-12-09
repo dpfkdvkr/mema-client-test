@@ -6,6 +6,9 @@ import { Emphasize, Text } from '@/components/Modal/modalTypography';
 import { useRouter } from 'next/navigation';
 import CalendarView from '@/features/meet/schedule/CalendarView';
 import { formatDate } from '@/lib/utils/formatDate';
+import CalendarViewButtons from '@/features/meet/schedule/CalendarViewButtons';
+
+type CalendarStatus = 'inProgress' | 'needReVote' | 'needComplete' | 'complete';
 
 function SchedulePage() {
   const router = useRouter();
@@ -16,6 +19,7 @@ function SchedulePage() {
     new Date(tmpDate.getFullYear(), tmpDate.getMonth(), tmpDate.getDate() + 1),
     new Date(tmpDate.getFullYear(), tmpDate.getMonth(), tmpDate.getDate() + 2),
   ];
+  const status = 'needReVote';
 
   const movePrevPage = () => {
     router.push('/meet/1');
@@ -24,13 +28,15 @@ function SchedulePage() {
   return (
     <>
       <CalendarView
-        type="inProgress"
+        type={status}
+        auth="host"
         onClickBack={movePrevPage}
         onClickConfirmDate={toggleOpenModal}
         selectedDates={tmpSelectedDates}
         onChangeDate={setDay}
         clickedDate={clickedDay}
       />
+      <CalendarViewButtons type={status} auth="host" />
       {isOpenModal && (
         <Modal
           type="OkCancel"

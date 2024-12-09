@@ -7,16 +7,25 @@ import JoinCodeInput from '@/features/meet/join/JoinCodeInput';
 import { useInputState } from '@/hooks/useInputState';
 import styled from 'styled-components';
 import { useRouter } from 'next/navigation';
+import Modal from '@/components/Modal';
+import { Text } from '@/components/Modal/modalTypography';
+import useToggle from '@/lib/hooks/useToggle';
 
 const JoinMeetingPage = () => {
-  const router = useRouter();
   const joinCode = useInputState();
+  const [isOpenModal, toggleOpenModal] = useToggle();
+
   return (
     <>
       <TabBar />
       <MeetingJoinGuide />
       <JoinCodeInput joinCode={joinCode} />
-      <StyledButton name="입력 완료" disabled={!joinCode.value} onClick={() => router.push('/')} />
+      <StyledButton name="입력 완료" disabled={!joinCode.value} onClick={toggleOpenModal} />
+      {isOpenModal && (
+        <Modal type="Ok" onOk={toggleOpenModal} width={326}>
+          <Text>유효하지 않은 참여 코드에요!</Text>
+        </Modal>
+      )}
     </>
   );
 };

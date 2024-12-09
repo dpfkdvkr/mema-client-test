@@ -5,8 +5,13 @@ import MeetingHeader from '@/features/meet/main/MeetingHeader';
 import MeetingContents from '@/features/meet/main/MeetingContents';
 import BasicLayout from '@/components/Layouts/BasicLayout';
 import MeetingButtons from '@/features/meet/main/MeetingButtons';
+import Modal from '@/components/Modal';
+import { LargeText, Text } from '@/components/Modal/modalTypography';
+import useToggle from '@/lib/hooks/useToggle';
 
 function MeetIdPage() {
+  const [isOpenModal, toggleOpenModal] = useToggle();
+
   const buttonConfig = {
     beforeSchedule: {
       mainButton: {
@@ -53,9 +58,18 @@ function MeetIdPage() {
   return (
     <BasicLayout>
       <TabBar />
-      <MeetingHeader />
+      <MeetingHeader joinCode="1234" onClickShare={toggleOpenModal} />
       <MeetingContents />
       <MeetingButtons config={config} />
+      {isOpenModal && (
+        <Modal type="Ok" onOk={toggleOpenModal} width={326}>
+          <Text>
+            참여코드 복사 완료!
+            <br />
+          </Text>
+          <LargeText>1234</LargeText>
+        </Modal>
+      )}
     </BasicLayout>
   );
 }

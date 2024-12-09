@@ -27,6 +27,8 @@ const Container = styled.div`
   text-align: center;
   svg {
     margin-bottom: 50px;
+    width: 160px;
+    height: 252px;
   }
   .title {
     margin-bottom: 10px;

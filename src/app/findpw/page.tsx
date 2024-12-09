@@ -5,10 +5,12 @@ import Modal from '@/components/Modal';
 import { useRouter } from 'next/navigation';
 import useToggle from '@/lib/hooks/useToggle';
 import TabBar from '@/components/TabBar';
-import PwFindInputs from '@/features/account/findpw/PwFindInputs';
-import PasswordInput from '@/features/account/findpw/PasswordInput';
+import PasswordInput from '../../features/account/PasswordInput';
 import { Text } from '@/components/Modal/modalTypography';
 import TitleWithDescription from '@/components/common/TitleWithDescription';
+import EmailVerificationInputs from '../../features/account/EmailVerificationInputs';
+import styled from 'styled-components';
+import Button from '@/components/Button';
 
 const FindPwPage = () => {
   const router = useRouter();
@@ -19,24 +21,46 @@ const FindPwPage = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isOpenModal, toggleOpenModal] = useToggle();
 
-  const prev = () => {
-    setCurrentStep((prev) => --prev);
-  };
   const next = () => {
     setCurrentStep((prev) => ++prev);
+  };
+
+  const [isVerified, setVerification] = useState(false);
+  const handleRequestVerification = () => {
+    console.log('이메일 인증 요청 보내기');
+    setVerification(!isVerified);
+  };
+
+  const handleVerifyCode = () => {
+    console.log('인증 코드 검증');
+    setVerification(!isVerified);
   };
 
   const steps = [
     {
       id: 1,
       content: (
-        <PwFindInputs onClickNext={next} email={email} verificationCode={verificationCode} />
+        <>
+          <EmailVerificationInputs
+            onClickRequestVerification={handleRequestVerification}
+            onClickVerifyCode={handleVerifyCode}
+            email={email}
+            verificationCode={verificationCode}
+            isVerified={isVerified}
+          />
+          <StyledButton name="다음으로" disabled={!isVerified} onClick={next} />
+        </>
       ),
       description: '비밀번호 재설정을 위해 이메일 인증을 해야해요',
     },
     {
       id: 2,
-      content: <PasswordInput password={password} onClickNext={toggleOpenModal} />,
+      content: (
+        <>
+          <PasswordInput password={password} />
+          <StyledButton name="변경하기" disabled={!password.value} onClick={toggleOpenModal} />
+        </>
+      ),
       description: '새로운 비밀번호를 입력해주세요',
     },
   ];
@@ -65,3 +89,9 @@ const FindPwPage = () => {
 };
 
 export default FindPwPage;
+
+const StyledButton = styled(Button)`
+  position: absolute;
+  bottom: 34px;
+  width: calc(100% - 32px);
+`;
