@@ -25,9 +25,9 @@ const WelcomeHeader = () => {
 export default WelcomeHeader;
 
 const TextOveray = styled.div`
-  width: calc(100% - 32px);
   position: absolute;
   transform: translateY(-50%);
+  width: calc(100% - 32px);
   text-align: center;
   .title {
     ${({ theme }) => theme.fonts.title.lg}

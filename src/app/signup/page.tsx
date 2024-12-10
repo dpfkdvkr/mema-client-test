@@ -13,6 +13,8 @@ import EmailVerificationInputs from '@/features/account/EmailVerificationInputs'
 import styled from 'styled-components';
 import Button from '@/components/Button';
 import PasswordInput from '@/features/account/PasswordInput';
+import { useMutation } from '@tanstack/react-query';
+import { signup } from '@/lib/api/account';
 
 const SignupPage = () => {
   const router = useRouter();
@@ -39,6 +41,26 @@ const SignupPage = () => {
     setVerification(!isVerified);
   };
 
+  const signupMutation = useMutation({
+    mutationFn: signup,
+    onSuccess: () => {
+      toggleOpenModal();
+    },
+    onError: (error) => {
+      console.error('Signup failed:', error);
+      alert('회원가입 실패');
+    },
+  });
+
+  const handleSignup = () => {
+    if (!(email.value && password.value && nickname.value)) return;
+    signupMutation.mutate({
+      email: email.value,
+      password: password.value,
+      nickname: nickname.value,
+    });
+  };
+
   const steps = [
     {
       id: 1,
@@ -61,7 +83,7 @@ const SignupPage = () => {
     },
     {
       id: 2,
-      content: <NicknameInput nickname={nickname} onClickNext={toggleOpenModal} />,
+      content: <NicknameInput nickname={nickname} onClickNext={handleSignup} />,
       description: '메마에서 사용하실 닉네임을 알려주세요!',
     },
   ];
