@@ -2,16 +2,20 @@ import React from 'react';
 import GrayBoxContainer from '@/features/mypage/GrayBoxContainer';
 import styled from 'styled-components';
 
-const ColorPalette = () => {
+type Props = {
+  selectedColor: string;
+  onClick: (color: string) => void;
+};
+
+const ColorPalette = ({ selectedColor, onClick }: Props) => {
   const colors = ['blue', 'red', 'yellow', 'green', 'purple', 'black'];
-  const selectedColor = 'green';
 
   return (
     <GrayBoxContainer>
       <p className="title">뱃지 컬러</p>
       <ColorChipGrid>
         {colors.map((color) => (
-          <ColorChip key={color} $color={color}>
+          <ColorChip key={color} $color={color} onClick={() => onClick(color)}>
             {color === selectedColor && <InnerCircle />}
           </ColorChip>
         ))}

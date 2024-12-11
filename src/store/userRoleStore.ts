@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 type UserRole = 'ROLE_CUSTOM' | 'ROLE_NAVER';
 
@@ -7,7 +8,12 @@ interface UserRoleState {
   setUserRole: (role: UserRole) => void;
 }
 
-export const useUserRoleStore = create<UserRoleState>((set) => ({
-  userRole: 'ROLE_NAVER', // 초기값
-  setUserRole: (role) => set({ userRole: role }),
-}));
+export const useUserRoleStore = create(
+  persist<UserRoleState>(
+    (set) => ({
+      userRole: 'ROLE_NAVER',
+      setUserRole: (role) => set({ userRole: role }),
+    }),
+    { name: 'useRole' },
+  ),
+);

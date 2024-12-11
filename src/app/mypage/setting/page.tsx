@@ -15,8 +15,10 @@ const SettingMyPage = () => {
   const [isOpenDeleteCompleteModal, toggleDeleteCompleteModal] = useToggle();
 
   const handleLogout = () => {
-    // 로그아웃 로직
-    toggleLogoutModal();
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('authToken');
+    }
+    router.push('/');
   };
 
   const handleDeleteAccount = () => {
@@ -44,7 +46,7 @@ const SettingMyPage = () => {
           }}
         />
         <SettingListItem name="로그아웃" onClick={toggleLogoutModal} />
-        <SettingListItem name="탈퇴하기" onClick={toggleDeleteAccountModal} />
+        {/*<SettingListItem name="탈퇴하기" onClick={toggleDeleteAccountModal} /> TODO: 고도화 때 진행 */}
       </Container>
       {isOpenLogoutModal && (
         <Modal

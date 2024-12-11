@@ -5,8 +5,17 @@ import styled from 'styled-components';
 import { useRouter } from 'next/navigation';
 import GrayBoxContainer from '@/features/mypage/GrayBoxContainer';
 
-const OwnedBadgeGrid = () => {
+type Props = {
+  selectedId: number;
+  ownedBadges: number[];
+  onClick: (id: number) => void;
+};
+
+const OwnedBadgeGrid = ({ selectedId, ownedBadges, onClick }: Props) => {
   const router = useRouter();
+  const MAX_BADGE_COUNT = 12;
+  const badgeIds = Array.from({ length: MAX_BADGE_COUNT }, (_, i) => i + 1);
+
   return (
     <BadgeContainer>
       <ProfileBadgeTitle>
@@ -18,22 +27,22 @@ const OwnedBadgeGrid = () => {
         />
       </ProfileBadgeTitle>
       <BadgeIconGrid>
-        <MemberIcon puzzleId={1} puzzleColor="blue" size={74} selected={true} />
-        <MemberIcon puzzleId={2} puzzleColor="blue" size={74} />
-        <MemberIcon puzzleId={3} puzzleColor="blue" size={74} disabled={true} />
-        <MemberIcon puzzleId={4} puzzleColor="blue" size={74} />
-        <MemberIcon puzzleId={5} puzzleColor="blue" size={74} />
-        <MemberIcon puzzleId={6} puzzleColor="blue" size={74} />
-        <MemberIcon puzzleId={7} puzzleColor="blue" size={74} />
-        <MemberIcon puzzleId={8} puzzleColor="blue" size={74} />
-        <MemberIcon puzzleId={9} puzzleColor="blue" size={74} />
-        <MemberIcon puzzleId={10} puzzleColor="blue" size={74} />
-        <MemberIcon puzzleId={11} puzzleColor="blue" size={74} />
-        <MemberIcon puzzleId={12} puzzleColor="blue" size={74} />
+        {badgeIds.map((badgeId) => (
+          <MemberIcon
+            key={badgeId}
+            puzzleId={badgeId}
+            puzzleColor="blue"
+            size={74}
+            selected={badgeId === selectedId}
+            disabled={!ownedBadges.includes(badgeId)}
+            onClick={() => onClick(badgeId)}
+          />
+        ))}
       </BadgeIconGrid>
     </BadgeContainer>
   );
 };
+
 export default OwnedBadgeGrid;
 
 const BadgeContainer = styled(GrayBoxContainer)`

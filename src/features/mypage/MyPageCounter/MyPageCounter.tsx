@@ -2,19 +2,25 @@
 import styled from 'styled-components';
 import React from 'react';
 
-const MyPageCounter = () => {
+type Props = {
+  meetCount: number;
+  visitCount: number;
+  badgeCount: number;
+};
+
+const MyPageCounter = ({ meetCount, visitCount, badgeCount }: Props) => {
   return (
     <Container>
       <CounterItem>
-        <p className="countText">12</p>
+        <p className="countText">{meetCount}</p>
         <p className="title">미팅 수</p>
       </CounterItem>
       <CounterItem>
-        <p className="countText">36</p>
+        <p className="countText">{visitCount}</p>
         <p className="title">메마 방문 수</p>
       </CounterItem>
       <CounterItem>
-        <p className="countText">2</p>
+        <p className="countText">{badgeCount}</p>
         <p className="title">내 뱃지 수</p>
       </CounterItem>
     </Container>
