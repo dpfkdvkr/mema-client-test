@@ -18,7 +18,7 @@ const IntroButtons = () => {
   return (
     <ButtonContainer>
       <NaverLoginButton onClick={handleNaverLogin}>
-        <NaverLogo className="logo" />
+        <NaverLogo />
         네이버로 로그인
       </NaverLoginButton>
       <StyledCustomButton name="이메일로 로그인" onClick={() => router.push('/login')} />
@@ -37,16 +37,18 @@ const ButtonContainer = styled.div`
   position: absolute;
   display: flex;
   flex-direction: column;
+  align-items: center;
   bottom: 138px;
   width: calc(100% - 32px);
   gap: 8px;
-  .logo {
+  svg {
     margin-right: 16px;
   }
 `;
 
 const NaverLoginButton = styled.button`
   height: 55px;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -61,7 +63,7 @@ const NaverLoginButton = styled.button`
         background-color: #ABDBC1;
       }
       &:active {
-        background-color: ${theme.colors.primary.darker};
+        background-color: #028a48;
         color: ${theme.colors.darker};
       }
       &:disabled {

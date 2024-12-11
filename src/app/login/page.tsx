@@ -8,11 +8,37 @@ import { useInputState } from '@/hooks/useInputState';
 import Button from '@/components/Button';
 import Logo from '/public/svgs/common/logo.svg';
 import TitleWithDescription from '@/components/common/TitleWithDescription';
+import { useMutation } from '@tanstack/react-query';
+import { login } from '@/lib/api/account';
+import { useUserRoleStore } from '@/store/userRoleStore';
 
 const LoginPage = () => {
   const router = useRouter();
-  const emailInputState = useInputState();
-  const passwordInputState = useInputState();
+  const email = useInputState();
+  const password = useInputState();
+  const { userRole, setUserRole } = useUserRoleStore();
+
+  const loginMutation = useMutation({
+    mutationFn: login,
+    onSuccess: () => {
+      setUserRole('ROLE_CUSTOM');
+      router.push('/');
+    },
+    onError: (error) => {
+      console.error('Login failed:', error);
+      alert('로그인 실패');
+    },
+  });
+
+  const handleLogin = () => {
+    if (!(email.value && password.value)) return;
+    loginMutation.mutate({ email: email.value, password: password.value });
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleLogin();
+  };
 
   return (
     <>
@@ -27,14 +53,18 @@ const LoginPage = () => {
         }
         description="회원 서비스 이용을 위해 로그인 해주세요!"
       />
-      <LoginForm email={emailInputState} password={passwordInputState} />
-      <StyledButton
-        name="로그인하기"
-        disabled={!(emailInputState.value && passwordInputState.value)}
-        onClick={() => {
-          console.log('로그인 요청 API 호출');
-        }}
-      />
+      <form onSubmit={handleSubmit}>
+        <LoginForm email={email} password={password} />
+        <StyledButton name="로그인하기" type="submit" disabled={!(email.value && password.value)} />
+      </form>
+
+      {/*<LoginForm email={email} password={password} />*/}
+      {/*<StyledButton*/}
+      {/*  name="로그인하기"*/}
+      {/*  type="submit"*/}
+      {/*  disabled={!(email.value && password.value)}*/}
+      {/*  onClick={handleLogin}*/}
+      {/*/>*/}
     </>
   );
 };

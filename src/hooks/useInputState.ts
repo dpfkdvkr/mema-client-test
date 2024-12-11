@@ -11,7 +11,7 @@ export interface UseInputStateReturn {
   handleFocus: () => void;
   handleBlur: () => void;
   handleChange: (newValue: string) => void;
-  setValue: Dispatch<SetStateAction<any>>;
+  setValue: Dispatch<SetStateAction<string>>;
 }
 
 export const useInputState = ({ validate }: UseInputStateParams = {}): UseInputStateReturn => {
