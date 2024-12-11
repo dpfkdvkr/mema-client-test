@@ -3,10 +3,15 @@ import styled from 'styled-components';
 import React from 'react';
 import MemberIcon from '@/components/common/MemberIcon';
 
-const MyPageProfileIcon = () => {
+type Props = {
+  puzzleId: number;
+  puzzleColor: string;
+};
+
+const MyPageProfileIcon = ({ puzzleId, puzzleColor }: Props) => {
   return (
     <Container>
-      <MemberIcon puzzleId={1} puzzleColor="green" size={150} />
+      <MemberIcon puzzleId={puzzleId} puzzleColor={puzzleColor} size={150} />
     </Container>
   );
 };

@@ -7,9 +7,10 @@ import GrayBoxContainer from '@/features/mypage/GrayBoxContainer';
 
 type Props = {
   nickname: UseInputStateReturn;
+  onBlur?: () => void;
 };
 
-const MyPageNicknameInput = ({ nickname }: Props) => {
+const MyPageNicknameInput = ({ nickname, onBlur }: Props) => {
   return (
     <Container>
       <p className="title">닉네임</p>
@@ -20,7 +21,7 @@ const MyPageNicknameInput = ({ nickname }: Props) => {
           placeholder="닉네임을 입력하세요"
           onChange={nickname.handleChange}
           onFocus={nickname.handleFocus}
-          onBlur={nickname.handleBlur}
+          onBlur={onBlur || nickname.handleBlur}
         />
       </InputWrapper>
     </Container>
