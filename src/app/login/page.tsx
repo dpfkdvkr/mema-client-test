@@ -10,12 +10,13 @@ import Logo from '/public/svgs/common/logo.svg';
 import TitleWithDescription from '@/components/common/TitleWithDescription';
 import { useMutation } from '@tanstack/react-query';
 import { login } from '@/lib/api/account';
-import { setUserRole } from '@/lib/api/defaultAxios';
+import { useUserRoleStore } from '@/store/userRoleStore';
 
 const LoginPage = () => {
   const router = useRouter();
   const email = useInputState();
   const password = useInputState();
+  const { userRole, setUserRole } = useUserRoleStore();
 
   const loginMutation = useMutation({
     mutationFn: login,
