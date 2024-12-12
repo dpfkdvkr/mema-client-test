@@ -2,29 +2,26 @@
 import React from 'react';
 import styled from 'styled-components';
 import Button from '@/components/Button';
-import TabBar from '@/components/TabBar';
 import { formatDate } from '@/lib/utils/formatDate';
 import CustomCalendar from '@/components/CustomCalendar/CustomCalendar';
+import { MAX_SCHEDULE_SELECTABLE_DATE } from '@/constants/scheduleConst';
 
-type VoteDatesProps = {
+type Props = {
   type: 'create' | 'edit';
-  onClickBack: () => void;
   onClickComplete: () => void;
   selectedDates: Date[];
   onChangeDates: (dates: Date[]) => void;
 };
 
-const VoteDates = ({
+const VoteDatesView = ({
   type = 'create',
-  onClickBack,
   onClickComplete,
   selectedDates,
   onChangeDates,
-}: VoteDatesProps) => {
+}: Props) => {
   return (
     <>
       <Container>
-        <TabBar onClick={onClickBack} />
         <p className="title">
           만남이 가능한 날짜를
           <br />
@@ -35,7 +32,7 @@ const VoteDates = ({
           mode="select"
           voteStartDay={new Date()}
           mySelectedDates={selectedDates}
-          maxSelectableDate={60}
+          maxSelectableDate={MAX_SCHEDULE_SELECTABLE_DATE}
           onChangeSelected={(dates) => onChangeDates(dates)}
         />
 
@@ -71,7 +68,7 @@ const VoteDates = ({
   );
 };
 
-export default VoteDates;
+export default VoteDatesView;
 
 const Container = styled.div`
   display: flex;

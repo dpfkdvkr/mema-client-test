@@ -4,8 +4,9 @@ import VoteDueDate from '@/features/meet/schedule/VoteDueDate/VoteDueDate';
 import useToggle from '@/lib/hooks/useToggle';
 import Modal from '@/components/Modal';
 import { Text } from '@/components/Modal/modalTypography';
-import VoteDates from '@/features/meet/schedule/VoteDates/VoteDates';
 import { useRouter } from 'next/navigation';
+import TabBar from '@/components/TabBar';
+import VoteDatesView from '@/features/meet/schedule/VoteDatesView/VoteDatesView';
 
 function CreateSchedulePage() {
   const router = useRouter();
@@ -29,19 +30,20 @@ function CreateSchedulePage() {
     {
       id: 2,
       content: (
-        <VoteDates
+        <VoteDatesView
           type="create"
-          onClickBack={prev}
           onClickComplete={toggleOpenModal}
           selectedDates={selectedDates}
           onChangeDates={setSelectedDates}
         />
       ),
+      onClickBack: prev,
     },
   ];
 
   return (
     <>
+      <TabBar onClickBack={steps[currentStep]?.onClickBack} />
       {steps[currentStep].content}
 
       {isOpenModal && (
