@@ -29,8 +29,8 @@ const EditMyPage = () => {
   const handleUpdate = useCallback(() => {
     updateMyPageMutation.mutate({
       nickname: nickname.value,
-      puzId: puzzleId,
-      puzColor: puzzleColor,
+      puzzleId,
+      puzzleColor,
     });
   }, [nickname.value, puzzleId, puzzleColor, updateMyPageMutation]);
 
@@ -44,8 +44,8 @@ const EditMyPage = () => {
       return;
     }
     nickname.setValue(user.data.nickname);
-    setPuzzleId(user.data.puzId);
-    setPuzzleColor(user.data.puzColor);
+    setPuzzleId(user.data.puzzleId);
+    setPuzzleColor(user.data.puzzleColor);
   }, [user]);
 
   useEffect(() => {

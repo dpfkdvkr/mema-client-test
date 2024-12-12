@@ -115,15 +115,15 @@ const BillUpsertPage = () => {
           memberIds: [],
         }));
         meet.data.members.map((member) => {
-          if (member.isMe) {
+          if (member.userInfo.isMe) {
             setCreateData((prev) => ({
               ...prev,
-              memberIds: [member.userId],
+              memberIds: [member.userInfo.userId],
             }));
           }
         });
       } else {
-        const newMemberIds = meet.data.members.map((member) => member.userId);
+        const newMemberIds = meet.data.members.map((member) => member.userInfo.userId);
         setCreateData((prev) => ({
           ...prev,
           memberIds: newMemberIds,
@@ -157,10 +157,10 @@ const BillUpsertPage = () => {
   useEffect(() => {
     if (meet) {
       meet.data.members.map((member) => {
-        if (member.isMe) {
+        if (member.userInfo.isMe) {
           setCreateData((prev) => ({
             ...prev,
-            memberIds: [member.userId],
+            memberIds: [member.userInfo.userId],
           }));
         }
       });
