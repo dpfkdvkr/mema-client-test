@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import TabBar from '@/components/TabBar';
 import TitleWithDescription from '@/components/common/TitleWithDescription';
 import MeetingNameInput from '@/features/meet/create/MeetingNameInput';
@@ -12,19 +12,39 @@ import Modal from '@/components/Modal';
 import { LargeText, Text } from '@/components/Modal/modalTypography';
 import useToggle from '@/lib/hooks/useToggle';
 import CopyToClipboard from 'react-copy-to-clipboard';
+import { useMutation } from '@tanstack/react-query';
+import { createMeet } from '@/lib/api/meets';
 
 const CreateMeetingPage = () => {
   const router = useRouter();
   const meetingName = useInputState();
-  const [currentStep, setCurrentStep] = React.useState(0);
+  const [currentStep, setCurrentStep] = useState(0);
   const [isOpenModal, toggleOpenModal] = useToggle();
-  const joinCode = '1234';
+  const [joinCode, setJoinCode] = useState('');
 
   const prev = () => {
     setCurrentStep((prev) => --prev);
   };
   const next = () => {
     setCurrentStep((prev) => ++prev);
+  };
+
+  const createMeetMutation = useMutation({
+    mutationFn: createMeet,
+    onSuccess: (res) => {
+      console.log(res.data);
+      setJoinCode(res.data.meetCode);
+      next();
+    },
+    onError: (error) => {
+      console.error('Create meet failed:', error);
+      alert('미팅 생성 실패');
+    },
+  });
+
+  const handleCreateMeet = () => {
+    if (!meetingName) return;
+    createMeetMutation.mutate({ meetName: meetingName.value });
   };
 
   const steps = [
@@ -37,7 +57,7 @@ const CreateMeetingPage = () => {
             description="미팅 이름은 최대 8글자까지 설정할 수 있어요"
           />
           <MeetingNameInput meetingName={meetingName} />
-          <StyledButton name="다음으로" disabled={!meetingName.value} onClick={next} />
+          <StyledButton name="다음으로" disabled={!meetingName.value} onClick={handleCreateMeet} />
         </>
       ),
     },
@@ -69,7 +89,7 @@ const CreateMeetingPage = () => {
             참여코드 복사 완료!
             <br />
           </Text>
-          <LargeText>1234</LargeText>
+          <LargeText>{joinCode}</LargeText>
         </Modal>
       )}
     </>

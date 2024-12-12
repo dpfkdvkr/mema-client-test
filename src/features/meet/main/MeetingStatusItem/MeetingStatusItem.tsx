@@ -30,7 +30,7 @@ const MeetingStatusItem = ({
           <StatusLabel $status={status}>{labelName[status]}</StatusLabel>
           <p>{title}</p>
           {warningMessage && <WarningMessage>{warningMessage}</WarningMessage>}
-          <p className="blueText">{voteResult}</p>
+          {voteResult && <p className="blueText">{voteResult}</p>}
         </Row>
         <div>
           <CountText $isHighlighted={votedMembers > 0}>{votedMembers}</CountText>
