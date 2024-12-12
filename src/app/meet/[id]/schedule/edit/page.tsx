@@ -1,7 +1,8 @@
 'use client';
 import React, { useState } from 'react';
-import VoteDates from '@/features/meet/schedule/VoteDates/VoteDates';
+import VoteDatesView from '@/features/meet/schedule/VoteDatesView';
 import { useRouter } from 'next/navigation';
+import TabBar from '@/components/TabBar';
 
 function EditSchedulePage() {
   const router = useRouter();
@@ -13,9 +14,9 @@ function EditSchedulePage() {
 
   return (
     <>
-      <VoteDates
+      <TabBar />
+      <VoteDatesView
         type="edit"
-        onClickBack={prev}
         onClickComplete={prev}
         selectedDates={selectedDates}
         onChangeDates={setSelectedDates}

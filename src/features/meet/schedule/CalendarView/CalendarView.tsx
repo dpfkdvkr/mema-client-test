@@ -1,18 +1,14 @@
 'use client';
 import React from 'react';
 import styled from 'styled-components';
-import Button from '@/components/Button';
-import TabBar from '@/components/TabBar';
 import { formatDate } from '@/lib/utils/formatDate';
-import { useRouter } from 'next/navigation';
 import CustomCalendar from '@/components/CustomCalendar/CustomCalendar';
-
-type MemberAuthorization = 'member' | 'host';
+import { ScheduleStatus } from '@/types/schedules';
+import { MAX_SCHEDULE_SELECTABLE_DATE, SCHEDULE_STATUS } from '@/constants/scheduleConst';
+import CalendarTitle from '@/features/meet/schedule/CalendarTitle';
 
 type VoteDatesProps = {
-  type: 'inProgress' | 'needReVote' | 'needComplete' | 'complete';
-  auth: MemberAuthorization;
-  onClickBack: () => void;
+  status: ScheduleStatus;
   onClickConfirmDate: () => void;
   selectedDates: Date[];
   onChangeDate: (dates: Date) => void;
@@ -20,83 +16,51 @@ type VoteDatesProps = {
 };
 
 const CalendarView = ({
-  type = 'inProgress',
-  auth = 'member',
-  onClickBack,
-  onClickConfirmDate,
+  status = SCHEDULE_STATUS.IN_PROGRESS,
   selectedDates,
   onChangeDate,
   clickedDate,
 }: VoteDatesProps) => {
-  const router = useRouter();
   return (
     <>
       <Container>
-        <TabBar onClick={onClickBack} />
-        <TextContainer>
-          {type === 'inProgress' && (
-            <p className="title">
-              다른 미팅원들이
-              <br />
-              투표중이에요
-            </p>
-          )}
-          {type === 'needReVote' && auth === 'host' && (
-            <>
-              <p className="title">모두가 가능한 날짜가 없어요</p>
-              <p className="description">미팅장이 날짜를 선택하거나, 재투표를 할 수 있어요</p>
-            </>
-          )}
-          {type === 'needReVote' && auth === 'member' && (
-            <>
-              <p className="title">미팅장이 만나는 날짜를 선택해야 해요</p>
-              <p className="description">미팅장이 날짜를 선택하거나, 재투표를 할 수 있어요</p>
-            </>
-          )}
-          {type === 'needComplete' && auth === 'host' && (
-            <>
-              <p className="title">만나는 날짜를 선택해야 해요.</p>
-              <p className="description">미팅장이 날짜를 선택하거나, 재투표를 할 수 있어요</p>
-            </>
-          )}
-          {type === 'complete' && <p className="title">11월 29일에 만나요!</p>}
-        </TextContainer>
+        <CalendarTitle status={status} />
 
-        {((type === 'needReVote' && auth === 'member') || type === 'inProgress') && (
+        {(status === SCHEDULE_STATUS.IN_PROGRESS || status === SCHEDULE_STATUS.NEED_REVOTE) && (
           <CustomCalendar
             mode="view"
             voteStartDay={new Date()}
             allSelectedDates={selectedDates}
             mySelectedDates={[selectedDates[1]]}
-            maxSelectableDate={60}
+            maxSelectableDate={MAX_SCHEDULE_SELECTABLE_DATE}
             onClick={(date) => onChangeDate(date)}
             clickedDate={clickedDate}
           />
         )}
-        {type === 'needReVote' && auth === 'host' && (
+        {status === SCHEDULE_STATUS.NEED_COMPLETE && (
           <CustomCalendar
             mode="complete"
             voteStartDay={new Date()}
             allSelectedDates={selectedDates}
             mySelectedDates={[selectedDates[1]]}
-            maxSelectableDate={60}
+            maxSelectableDate={MAX_SCHEDULE_SELECTABLE_DATE}
             onClick={(date) => onChangeDate(date)}
             clickedDate={clickedDate}
           />
         )}
-        {type === 'complete' && (
+        {status === SCHEDULE_STATUS.COMPLETED && (
           <CustomCalendar
             mode="result"
             voteStartDay={new Date()}
             allSelectedDates={selectedDates}
             mySelectedDates={[selectedDates[1]]}
-            maxSelectableDate={60}
+            maxSelectableDate={MAX_SCHEDULE_SELECTABLE_DATE}
             onClick={(date) => onChangeDate(date)}
             clickedDate={clickedDate}
           />
         )}
 
-        <StyledDiv>
+        <Description>
           {clickedDate ? (
             <>
               <span className="emphasize-desc">{formatDate(clickedDate, 'MM월 DD일')}</span>
@@ -111,28 +75,11 @@ const CalendarView = ({
               누구와 만날 수 있는지 알 수 있어요!
             </p>
           )}
-        </StyledDiv>
+        </Description>
         {/*<>*/}
         {/*  <span className="emphasize-desc">{formatDate(clickedDate, "MM월 DD일")}</span>*/}
         {/*  에 만날 수 있는 사람은 아직 없어요.*/}
         {/*</>*/}
-        {type === 'inProgress' && (
-          <ButtonContainer>
-            <Button
-              name="재투표하기"
-              buttonType="gray"
-              onClick={() => {
-                router.push('/meet/1/schedule/edit');
-              }}
-              disabled={selectedDates.length === 0}
-            />
-            <Button
-              name="날짜 고르기"
-              onClick={onClickConfirmDate}
-              disabled={selectedDates.length === 0} // Todo: 조건은 !(미팅원 모두 입력 완료 && 투표 마감)
-            />
-          </ButtonContainer>
-        )}
       </Container>
     </>
   );
@@ -145,20 +92,7 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const TextContainer = styled.div`
-  margin: 20px 0 22px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  .title {
-    ${({ theme }) => theme.fonts.title.md};
-  }
-  .description {
-    ${({ theme }) => theme.fonts.text.lg};
-  }
-`;
-
-const StyledDiv = styled.div`
+const Description = styled.div`
   padding: 12px 16px;
   margin-top: 10px;
   background-color: ${({ theme }) => theme.colors.gray[6]};
@@ -175,12 +109,4 @@ const StyledDiv = styled.div`
   .bold-desc {
     ${({ theme }) => theme.fonts.title.xs};
   }
-`;
-
-const ButtonContainer = styled.div`
-  position: absolute;
-  display: flex;
-  bottom: 34px;
-  width: calc(100% - 32px);
-  gap: 8px;
 `;

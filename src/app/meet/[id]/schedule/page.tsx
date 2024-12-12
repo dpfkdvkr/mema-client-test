@@ -7,8 +7,9 @@ import { useRouter } from 'next/navigation';
 import CalendarView from '@/features/meet/schedule/CalendarView';
 import { formatDate } from '@/lib/utils/formatDate';
 import CalendarViewButtons from '@/features/meet/schedule/CalendarViewButtons';
-
-type CalendarStatus = 'inProgress' | 'needReVote' | 'needComplete' | 'complete';
+import { SCHEDULE_STATUS } from '@/constants/scheduleConst';
+import { ScheduleStatus } from '@/types/schedules';
+import TabBar from '@/components/TabBar';
 
 function SchedulePage() {
   const router = useRouter();
@@ -19,7 +20,7 @@ function SchedulePage() {
     new Date(tmpDate.getFullYear(), tmpDate.getMonth(), tmpDate.getDate() + 1),
     new Date(tmpDate.getFullYear(), tmpDate.getMonth(), tmpDate.getDate() + 2),
   ];
-  const status = 'needReVote';
+  const status: ScheduleStatus = SCHEDULE_STATUS.IN_PROGRESS;
 
   const movePrevPage = () => {
     router.push('/meet/1');
@@ -27,16 +28,15 @@ function SchedulePage() {
 
   return (
     <>
+      <TabBar onClick={movePrevPage} />
       <CalendarView
-        type={status}
-        auth="host"
-        onClickBack={movePrevPage}
+        status={status}
         onClickConfirmDate={toggleOpenModal}
         selectedDates={tmpSelectedDates}
         onChangeDate={setDay}
         clickedDate={clickedDay}
       />
-      <CalendarViewButtons type={status} auth="host" />
+      <CalendarViewButtons type={status} onClickSelectFinalDate={toggleOpenModal} />
       {isOpenModal && (
         <Modal
           type="OkCancel"
