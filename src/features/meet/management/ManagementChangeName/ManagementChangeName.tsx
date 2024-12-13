@@ -4,7 +4,7 @@ import Input from '@/components/Input';
 import InputWrapper from '@/components/Input/InputWrapper';
 import Modal from '@/components/Modal';
 import { Text } from '@/components/Modal/modalTypography';
-import { useInputState } from '@/hooks/useInputState';
+import { useInputState } from '@/lib/hooks/useInputState';
 import { getMeet, updateMeet } from '@/lib/api/meets';
 import useToggle from '@/lib/hooks/useToggle';
 import { MeetResponse } from '@/types/meets';

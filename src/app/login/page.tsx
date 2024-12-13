@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import styled from 'styled-components';
 import React from 'react';
 import LoginForm from '@/components/LoginForm';
-import { useInputState } from '@/hooks/useInputState';
+import { useInputState } from '@/lib/hooks/useInputState';
 import Button from '@/components/Button';
 import Logo from '/public/svgs/common/logo.svg';
 import TitleWithDescription from '@/components/common/TitleWithDescription';

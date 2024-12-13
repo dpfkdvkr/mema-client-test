@@ -3,7 +3,7 @@ import Modal from '@/components/Modal';
 import { Text } from '@/components/Modal/modalTypography';
 import BillCreateName from '@/features/meet/bill/BillCreate/BillCreateName';
 import BillCreatePrice from '@/features/meet/bill/BillCreate/BillCreatePrice';
-import { useInputState } from '@/hooks/useInputState';
+import { useInputState } from '@/lib/hooks/useInputState';
 import { createBill, getBill, updateBill } from '@/lib/api/bills';
 import { getMeet } from '@/lib/api/meets';
 import useToggle from '@/lib/hooks/useToggle';

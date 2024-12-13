@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import MyPageProfileIcon from '@/features/mypage/MyPageProfileIcon/MyPageProfileIcon';
 import TabBar from '@/components/TabBar';
-import { useInputState } from '@/hooks/useInputState';
+import { useInputState } from '@/lib/hooks/useInputState';
 import MyPageNicknameInput from '@/features/mypage/MyPageNicknameInput';
 import OwnedBadgeGrid from '@/features/mypage/OwnedBadgeGrid';
 import ColorPalette from '@/features/mypage/ColorPalette';
