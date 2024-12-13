@@ -51,8 +51,8 @@ const MemberIcon: React.FC<MemberIconProps> = ({
   selected = false,
   onClick,
 }) => {
-  if (puzzleId > MAX_BADGE_COUNT) puzzleId = 0; // invalid badge
-  const IconComponent = iconMap[puzzleId];
+  const validPuzzleId = puzzleId > MAX_BADGE_COUNT ? 0 : puzzleId;
+  const IconComponent = iconMap[validPuzzleId] || iconMap[0];
 
   return (
     <IconWrapper

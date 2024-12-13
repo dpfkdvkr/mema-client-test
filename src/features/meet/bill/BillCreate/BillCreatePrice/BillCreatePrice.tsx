@@ -6,7 +6,7 @@ import InputWrapper from '@/components/Input/InputWrapper';
 import Button from '@/components/Button';
 import TabBar from '@/components/TabBar';
 import { useSearchParams } from 'next/navigation';
-import { Member } from '@/types/meets';
+import { MeetMember } from '@/types/meets';
 
 type Props = {
   data: {
@@ -15,7 +15,7 @@ type Props = {
     peopleNumber: number;
     memberIds: number[];
   };
-  members: Member[];
+  members: MeetMember[];
   value: string;
   isAllSelected: boolean;
   isFocused: boolean;

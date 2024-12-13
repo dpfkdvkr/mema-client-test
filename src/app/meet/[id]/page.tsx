@@ -9,7 +9,7 @@ import { LargeText, Text } from '@/components/Modal/modalTypography';
 import useToggle from '@/lib/hooks/useToggle';
 import { useQuery } from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';
-import { Meet, MeetStatus } from '@/types/meets';
+import { MeetResponse, MeetStatus } from '@/types/meets';
 import { getMeet } from '@/lib/api/meets';
 import { useParams } from 'next/navigation';
 import { toDate } from '@/lib/utils/dateUtils';
@@ -29,7 +29,7 @@ function MeetIdPage() {
   const [isOpenModal, toggleOpenModal] = useToggle();
   const [meetStatus, setMeetStatus] = useState<MeetStatus>(MEET_STATUS.SCHEDULE_BEFORE_USE);
 
-  const { data: meet } = useQuery<AxiosResponse<Meet>>({
+  const { data: meet } = useQuery<AxiosResponse<MeetResponse>>({
     queryKey: ['meet', meetId],
     queryFn: () => getMeet(meetId as number),
     enabled: meetId !== null,
@@ -60,7 +60,7 @@ function MeetIdPage() {
     return uniqueMemberIds.size;
   }, [schedules]);
 
-  const findMyMeetId = (meet: Meet) => {
+  const findMyMeetId = (meet: MeetResponse) => {
     return meet.members.find((member) => member.userInfo.isMe === true)?.meetMemberId;
   };
 
