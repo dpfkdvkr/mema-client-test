@@ -3,16 +3,17 @@ import React from 'react';
 import styled from 'styled-components';
 import { Share2 } from 'react-feather';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import { Member } from '@/types/meets';
+import { MeetMember } from '@/types/meets';
 
 interface Props {
   onClickShare: () => void;
   meetName: string;
-  members: Member[];
+  members: MeetMember[];
   joinCode: string;
 }
 
 const MeetingHeader = ({ onClickShare, meetName, members, joinCode }: Props) => {
+  const convertedMembers = members.map((member) => member.userInfo);
   return (
     <Container>
       <SpaceBetweenRow>
@@ -23,7 +24,7 @@ const MeetingHeader = ({ onClickShare, meetName, members, joinCode }: Props) => 
       </SpaceBetweenRow>
       <Row>
         <p className="description">인원 {members.length}명</p>
-        <MemberIconStack members={members} />
+        <MemberIconStack members={convertedMembers} />
       </Row>
     </Container>
   );

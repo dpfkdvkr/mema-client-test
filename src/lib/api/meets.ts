@@ -1,7 +1,7 @@
 import { defaultAxios } from '@/lib/api/defaultAxios';
 import { mockMeetData } from './mock/meets';
 import { AxiosResponse } from 'axios';
-import { Meet } from '@/types/meets';
+import { MeetResponse } from '@/types/meets';
 
 // 미팅 개별조회
 // export const getMeet = async (meetId: number): Promise<AxiosResponse<Meet>> => {
@@ -63,9 +63,9 @@ export const createMeet = async (data: { meetName: string }) => {
 };
 
 // 미팅 전체 조회
-// export const getHomeMeets = async () => {
-//   return await defaultAxios.get(`/meets/home`);
-// };
+export const getHomeMeets = async () => {
+  return await defaultAxios.get(`/meets/home`);
+};
 
 // 참여 코드 입력
 export const joinMeet = async (data: { joinCode: string }) => {

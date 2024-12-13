@@ -8,7 +8,7 @@ import { createBill, getBill, updateBill } from '@/lib/api/bills';
 import { getMeet } from '@/lib/api/meets';
 import useToggle from '@/lib/hooks/useToggle';
 import { Bill } from '@/types/bills';
-import { Meet } from '@/types/meets';
+import { MeetResponse } from '@/types/meets';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
@@ -54,7 +54,7 @@ const BillUpsertPage = () => {
 
   const searchParam = Number(searchParams.get('chargeId'));
 
-  const { data: meet } = useQuery<AxiosResponse<Meet>>({
+  const { data: meet } = useQuery<AxiosResponse<MeetResponse>>({
     queryKey: ['meet'],
     queryFn: () => getMeet(Number(params.id)),
   });
