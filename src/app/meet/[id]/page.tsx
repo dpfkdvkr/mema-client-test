@@ -101,7 +101,7 @@ function MeetIdPage() {
     if (!meet || !schedules) return;
     const { meetDate, voteExpiredDate, voteExpiredLocation, meetLocation } = meet.data;
     const isVoteExpired = new Date() > new Date(meet.data.voteExpiredDate);
-    // const totalMemberCount = meet.data.members.length;
+    const totalMemberCount = meet.data.members.length;
     const votedMemberCount = getTotalVotedMembers(schedules.data.voteDates);
     const hasIVoted = hasUserVotedSchedule(
       schedules.data.voteDates,
@@ -127,7 +127,11 @@ function MeetIdPage() {
         }
       } else {
         // 일정 투표 만료 이전
-        if (hasIVoted) {
+        if (votedMemberCount === totalMemberCount && fullParticipationDateCount === 0) {
+          // 모든 인원이 투표했는데 가능한 날이 었을 때
+          setMeetStatus(MEET_STATUS.SCHEDULE_AFTER_USE);
+          setMeetWarningMessage('가능한 날짜가 없어요! 재투표가 필요해요.');
+        } else if (hasIVoted) {
           setMeetStatus(MEET_STATUS.SCHEDULE_AFTER_USE);
         } else {
           setMeetStatus(MEET_STATUS.SCHEDULE_CREATED_BUT_BEFORE_USE);
@@ -158,7 +162,6 @@ function MeetIdPage() {
     if (!meetId || !meet) return;
     const myMeetMemberId = getMeetMemberId(meetId);
     if (!myMeetMemberId) {
-      console.log(meet.data.members);
       const foundMeetMemberId = meet.data.members.find((member) => member.isMe)?.meetMemberId;
       if (foundMeetMemberId) {
         setMeetMemberId(meetId, foundMeetMemberId);

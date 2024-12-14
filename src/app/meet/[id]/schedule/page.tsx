@@ -12,7 +12,7 @@ import { ScheduleResponse, CalendarMode, MyScheduleResponse } from '@/types/sche
 import TabBar from '@/components/TabBar';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError, AxiosResponse } from 'axios';
-import { getAllSchedules, getMySchedules, setFinalDate } from '@/lib/api/schedules';
+import { deleteSchedule, getAllSchedules, getMySchedules, setFinalDate } from '@/lib/api/schedules';
 import { MeetResponse } from '@/types/meets';
 import { getMeet } from '@/lib/api/meets';
 import { ErrorResponse } from '@/types/error';
@@ -53,10 +53,10 @@ function SchedulePage() {
     enabled: meetId !== null,
   });
 
+  // 최종 일자 선택
   const setFinalDateMutation = useMutation({
     mutationFn: setFinalDate,
     onSuccess: () => {
-      console.log('성공!');
       router.push(`/meet/${meetId}/schedule`);
     },
     onError: (error: AxiosError<ErrorResponse>) => {
@@ -80,6 +80,22 @@ function SchedulePage() {
     meet: meet?.data,
     schedules: schedules?.data,
   });
+
+  // 재투표 (기존 Vote 삭제)
+  const deleteVoteMutation = useMutation({
+    mutationFn: deleteSchedule,
+    onSuccess: () => {
+      router.push(`/meet/${meetId}/schedule/create`);
+    },
+    onError: (error: AxiosError<ErrorResponse>) => {
+      console.error('Error editing schedule:', error);
+    },
+  });
+
+  const handleReVote = useCallback(() => {
+    if (!meetId) return;
+    deleteVoteMutation.mutate(meetId);
+  }, [meetId, deleteVoteMutation]);
 
   // 미팅 상태에 따른 스케줄 모드 변경
   useEffect(() => {
@@ -121,6 +137,7 @@ function SchedulePage() {
         onClickSelectFinalDate={toggleSubmitModal}
         errorModalToggle={toggleErrorModal}
         setErrorMessage={setErrorMessage}
+        onClickReVote={handleReVote}
       />
       {isOpenSubmitModal && (
         <Modal type="OkCancel" onOk={handleSubmitFinalDate} onClose={toggleSubmitModal} width={326}>

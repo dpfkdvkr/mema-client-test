@@ -7,8 +7,9 @@ import { useRouter } from 'next/navigation';
 interface Props {
   meetId: number | null;
   type: ScheduleStatus;
-  onClickSelectFinalDate: () => void;
   date: Date | null;
+  onClickSelectFinalDate: () => void;
+  onClickReVote: () => void;
   errorModalToggle: () => void;
   setErrorMessage: (str: string) => void;
 }
@@ -16,8 +17,9 @@ interface Props {
 const CalendarViewButtons = ({
   meetId,
   type,
-  onClickSelectFinalDate,
   date,
+  onClickSelectFinalDate,
+  onClickReVote,
   errorModalToggle,
   setErrorMessage,
 }: Props) => {
@@ -36,10 +38,7 @@ const CalendarViewButtons = ({
       )}
       {type === SCHEDULE_STATUS.NEED_REVOTE && (
         <>
-          <Button
-            name="재투표하기"
-            onClick={() => router.push(`/meet/${meetId}/schedule/create`)}
-          />
+          <Button name="재투표하기" onClick={onClickReVote} />
           <Button
             name="수정하기"
             buttonType="gray"
@@ -49,11 +48,7 @@ const CalendarViewButtons = ({
       )}
       {type === SCHEDULE_STATUS.NEED_COMPLETE && (
         <>
-          <Button
-            name="재투표하기"
-            buttonType="gray"
-            onClick={() => router.push(`/meet/${meetId}/schedule/create`)}
-          />
+          <Button name="재투표하기" buttonType="gray" onClick={onClickReVote} />
           <Button name="날짜 고르기" onClick={handleClickFinalDate} />
         </>
       )}

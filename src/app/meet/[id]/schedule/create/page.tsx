@@ -52,19 +52,27 @@ function CreateSchedulePage() {
       if (error.response?.data.code === 'VD003') {
         prev();
         togglePastTimeModal();
+      } else if (error.response?.data.code === 'VD006') {
+        handleCreateSchedule(false);
+        router.push(`/schedule/${meetId}`);
       }
     },
   });
 
-  const handleCreateSchedule = useCallback(() => {
-    if (!meetId || !myMeetMemberId) return;
-    const data: CreateScheduleData = {
-      expiredVoteDate: formatDateForRequset(voteDueDate),
-      meetMemberId: myMeetMemberId,
-      voteDates: getFormattedDates(),
-    };
-    createDateVoteMutation.mutate({ meetId, data });
-  }, [createDateVoteMutation, voteDueDate, getFormattedDates]);
+  const handleCreateSchedule = useCallback(
+    (includeExpiredDate = true) => {
+      if (!meetId || !myMeetMemberId) return;
+
+      const data: CreateScheduleData = {
+        meetMemberId: myMeetMemberId,
+        voteDates: getFormattedDates(),
+        ...(includeExpiredDate && { expiredVoteDate: formatDateForRequset(voteDueDate) }),
+      };
+
+      createDateVoteMutation.mutate({ meetId, data });
+    },
+    [createDateVoteMutation, voteDueDate, getFormattedDates, meetId, myMeetMemberId],
+  );
 
   const steps = [
     {
