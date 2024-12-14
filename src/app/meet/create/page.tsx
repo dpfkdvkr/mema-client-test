@@ -32,7 +32,6 @@ const CreateMeetingPage = () => {
   const createMeetMutation = useMutation({
     mutationFn: createMeet,
     onSuccess: (res) => {
-      console.log(res.data);
       setJoinCode(res.data.meetCode);
       next();
     },

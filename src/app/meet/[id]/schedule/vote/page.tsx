@@ -121,19 +121,15 @@ function EditSchedulePage() {
   useEffect(() => {
     switch (status) {
       case SCHEDULE_STATUS.IN_PROGRESS:
-        console.log(1);
         setCalendarMode(CALENDAR_MODE.VIEW);
         break;
       case SCHEDULE_STATUS.NEED_REVOTE:
-        console.log(2);
         setCalendarMode(CALENDAR_MODE.SELECT_MULTI);
         break;
       case SCHEDULE_STATUS.NEED_COMPLETE:
-        console.log(3);
         setCalendarMode(CALENDAR_MODE.SELECT_ONE);
         break;
       case SCHEDULE_STATUS.COMPLETED:
-        console.log(4);
         setCalendarMode(CALENDAR_MODE.VIEW);
         break;
     }

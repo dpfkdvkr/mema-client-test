@@ -12,7 +12,6 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({ date, onChange }) => {
   const [month, setMonth] = useState(date.getMonth() + 1);
   const [day, setDay] = useState(date.getDate());
   const [monthDays, setMonthDays] = useState<number[]>(Array.from({ length: 30 }, (_, i) => i + 1));
-  console.log('date', date);
 
   const updateDateAndTriggerChange = useCallback(() => {
     const updatedDate = new Date(dateRef.current);
