@@ -22,7 +22,7 @@ import { defaultAxios } from './defaultAxios';
 //   );
 // };
 export const getBills = async (meetId: number) => {
-  return await defaultAxios.get(`/meets/${meetId}/charge/total`);
+  return await defaultAxios.get(`/meets/${meetId}/charge`);
 };
 
 // 정산 개별조회
