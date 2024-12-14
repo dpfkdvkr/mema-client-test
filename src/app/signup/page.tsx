@@ -16,11 +16,17 @@ import PasswordInput from '@/features/account/PasswordInput';
 import { useMutation } from '@tanstack/react-query';
 import { signup } from '@/lib/api/account';
 
+const passwordValidation = (value: string): boolean => {
+  // 알파벳, 숫자 조합의 8~12자리 확인
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,12}$/;
+  return passwordRegex.test(value);
+};
+
 const SignupPage = () => {
   const router = useRouter();
   const nickname = useInputState();
   const email = useInputState();
-  const password = useInputState();
+  const password = useInputState({ validate: passwordValidation });
   const verificationCode = useInputState();
   const [isVerified, setVerification] = useState(true); // TODO : 고도화 때 인증 기능 추가하면 기본값 false로 수정
   const [currentStep, setCurrentStep] = useState(0);
