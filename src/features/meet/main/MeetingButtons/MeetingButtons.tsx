@@ -2,16 +2,10 @@ import Button from '@/components/Button';
 import React from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/navigation';
-
-export type MeetingStatus =
-  | 'SCHEDULE_BEFORE_USE' // 일정 이용 전 : voteExpiredDate 없을 때
-  | 'SCHEDULE_AFTER_USE' // 일정 이용 중 : meetDate 없고, voteExpiredDate 있고, 내가 투표 완료 했을 때
-  | 'PLACE_BEFORE_USE' // 일정 완료, 장소 이용 전 : meetDate 있고 voteExpiredLocation 없을 때
-  | 'PLACE_AFTER_USE' // 장소 이용중 : meetLocation 없고, voteExpiredLocation 있을 때
-  | 'BILL'; // 장소 완료, 정산 이용 전 : meetLocation 있는 경우 || 약속 끝! : meetDate 지난 경우
+import { MeetStatus } from '@/types/meets';
 
 type Props = {
-  status: MeetingStatus;
+  status: MeetStatus;
   meetId: number;
 };
 
@@ -25,6 +19,20 @@ const MeetingButtons = ({ status, meetId }: Props) => {
       },
       subButtons: [],
     },
+    SCHEDULE_CREATED_BUT_BEFORE_USE: {
+      mainButton: {
+        name: '만나는 날짜 정하기',
+        route: `/meet/${meetId}/schedule/vote`,
+      },
+      subButtons: [],
+    },
+    // SCHEDULE_CREATED_BUT_EXPIRED: {
+    //   mainButton: {
+    //     name: '날짜 투표 현황 보기',
+    //     route: `/meet/${meetId}/schedule`,
+    //   },
+    //   subButtons: [],
+    // },
     SCHEDULE_AFTER_USE: {
       mainButton: {
         name: '날짜 투표 현황 보기',
@@ -37,7 +45,7 @@ const MeetingButtons = ({ status, meetId }: Props) => {
         name: '만나는 장소 정하기',
         route: `/meet/${meetId}/place`,
       },
-      subButtons: [{ name: '만나는 날짜 확인하기', route: '/meet/1/schedule' }],
+      subButtons: [{ name: '만나는 날짜 확인하기', route: `/meet/${meetId}/schedule` }],
     },
     PLACE_AFTER_USE: {
       mainButton: {
@@ -46,7 +54,17 @@ const MeetingButtons = ({ status, meetId }: Props) => {
       },
       subButtons: [{ name: '만나는 날짜 확인하기', route: `/meet/${meetId}/schedule` }],
     },
-    BILL: {
+    BILL_BEFORE_MEET: {
+      mainButton: {
+        name: '정산하기',
+        route: '/meet/1/bill',
+      },
+      subButtons: [
+        { name: '날짜 확인하기', route: `/meet/${meetId}/schedule` },
+        { name: '장소 확인하기', route: `/meet/${meetId}/place` },
+      ],
+    },
+    BILL_AFTER_MEET: {
       mainButton: {
         name: '정산하기',
         route: '/meet/1/bill',

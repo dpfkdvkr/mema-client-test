@@ -2,7 +2,7 @@ import InputWrapper from '@/components/Input/InputWrapper';
 import Input from '@/components/Input';
 import React from 'react';
 import styled from 'styled-components';
-import { UseInputStateReturn } from '@/hooks/useInputState';
+import { UseInputStateReturn } from '@/lib/hooks/useInputState';
 import GrayBoxContainer from '@/features/mypage/GrayBoxContainer';
 
 type Props = {

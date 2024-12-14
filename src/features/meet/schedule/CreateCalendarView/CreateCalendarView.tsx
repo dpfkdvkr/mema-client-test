@@ -1,24 +1,35 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Button from '@/components/Button';
-import { formatDate } from '@/lib/utils/formatDate';
+import { formatDate, isSameDate } from '@/lib/utils/dateUtils';
 import CustomCalendar from '@/components/CustomCalendar/CustomCalendar';
-import { MAX_SCHEDULE_SELECTABLE_DATE } from '@/constants/scheduleConst';
+import { CALENDAR_MODE, MAX_SCHEDULE_SELECTABLE_DATE } from '@/constants/scheduleConst';
 
 type Props = {
   type: 'create' | 'edit';
   onClickComplete: () => void;
-  selectedDates: Date[];
+  mySelectedDates: Date[];
   onChangeDates: (dates: Date[]) => void;
 };
 
-const VoteDatesView = ({
+const CreateCalendarView = ({
   type = 'create',
   onClickComplete,
-  selectedDates,
+  mySelectedDates,
   onChangeDates,
 }: Props) => {
+  const [lastSelectedDate, setLastSelectedDate] = useState<Date | null>(null);
+
+  const onClickDate = (clickedDate: Date) => {
+    const isAlreadySelected = mySelectedDates.some((date) => isSameDate(date, clickedDate));
+    if (isAlreadySelected) {
+      setLastSelectedDate(null);
+    } else {
+      setLastSelectedDate(clickedDate);
+    }
+  };
+
   return (
     <>
       <Container>
@@ -29,15 +40,16 @@ const VoteDatesView = ({
         </p>
 
         <CustomCalendar
-          mode="select"
+          mode={CALENDAR_MODE.SELECT_MULTI}
           voteStartDay={new Date()}
-          mySelectedDates={selectedDates}
+          mySelectedDates={mySelectedDates}
           maxSelectableDate={MAX_SCHEDULE_SELECTABLE_DATE}
           onChangeSelected={(dates) => onChangeDates(dates)}
+          onClick={onClickDate}
         />
 
         <StyledDiv>
-          {selectedDates.length === 0 ? (
+          {mySelectedDates.length === 0 || lastSelectedDate === null ? (
             <p className="grayish-desc">
               날짜를 선택하면 그 날에
               <br />
@@ -45,12 +57,10 @@ const VoteDatesView = ({
             </p>
           ) : (
             <>
-              <span className="emphasize-desc">
-                {formatDate(selectedDates[selectedDates.length - 1], 'MM월 DD일')}
-              </span>
-              에 만날 수 있는 사람은
+              <span className="emphasize-desc">{formatDate(lastSelectedDate, 'MM월 DD일')}</span>
+              에 만날 수 있는 사람은 아직 없어요.
               <br />
-              <span className="bold-desc">닉네임, 닉네임, 닉네임 이에요.</span>
+              <span className="bold-desc"></span>
             </>
           )}
         </StyledDiv>
@@ -58,7 +68,7 @@ const VoteDatesView = ({
           <StyledButton
             name="선택 완료!"
             onClick={onClickComplete}
-            disabled={selectedDates.length === 0}
+            disabled={mySelectedDates.length === 0}
           />
         ) : (
           <StyledButton name="수정하기" onClick={onClickComplete} />
@@ -68,7 +78,7 @@ const VoteDatesView = ({
   );
 };
 
-export default VoteDatesView;
+export default CreateCalendarView;
 
 const Container = styled.div`
   display: flex;

@@ -4,7 +4,7 @@ import TabBar from '@/components/TabBar';
 import Button from '@/components/Button';
 import MeetingJoinGuide from '@/features/meet/join/MeetingJoinGuide';
 import JoinCodeInput from '@/features/meet/join/JoinCodeInput';
-import { useInputState } from '@/hooks/useInputState';
+import { useInputState } from '@/lib/hooks/useInputState';
 import styled from 'styled-components';
 import { useRouter } from 'next/navigation';
 import Modal from '@/components/Modal';
@@ -13,7 +13,7 @@ import useToggle from '@/lib/hooks/useToggle';
 import { useMutation } from '@tanstack/react-query';
 import { joinMeet } from '@/lib/api/meets';
 import { AxiosError } from 'axios';
-import { ErrorResponse } from '@/types/ErrorResponse';
+import { ErrorResponse } from '@/types/error';
 
 const JoinMeetingPage = () => {
   const router = useRouter();

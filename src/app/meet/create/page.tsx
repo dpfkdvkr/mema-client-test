@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import TabBar from '@/components/TabBar';
 import TitleWithDescription from '@/components/common/TitleWithDescription';
 import MeetingNameInput from '@/features/meet/create/MeetingNameInput';
-import { useInputState } from '@/hooks/useInputState';
+import { useInputState } from '@/lib/hooks/useInputState';
 import styled from 'styled-components';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
@@ -32,7 +32,6 @@ const CreateMeetingPage = () => {
   const createMeetMutation = useMutation({
     mutationFn: createMeet,
     onSuccess: (res) => {
-      console.log(res.data);
       setJoinCode(res.data.meetCode);
       next();
     },
