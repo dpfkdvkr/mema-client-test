@@ -13,7 +13,7 @@ import useToggle from '@/lib/hooks/useToggle';
 import { useMutation } from '@tanstack/react-query';
 import { joinMeet } from '@/lib/api/meets';
 import { AxiosError } from 'axios';
-import { ErrorResponse } from '@/types/ErrorResponse';
+import { ErrorResponse } from '@/types/error';
 
 const JoinMeetingPage = () => {
   const router = useRouter();

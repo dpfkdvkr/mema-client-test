@@ -6,11 +6,11 @@ export type Member = {
   nickname: string; // 닉네임
   puzzleId: number; // 프로필 퍼즐 ID
   puzzleColor: string; // 프로필 퍼즐 색상
-  isMe?: boolean; // 본인인지 아닌지
 };
 
 export type MeetMember = {
   meetMemberId: number; // 미팅에서의 유저 고유 ID
+  isMe?: boolean; // 본인인지 아닌지
   userInfo: Member; // 멤버 정보
 };
 

@@ -5,24 +5,45 @@ import { SCHEDULE_STATUS } from '@/constants/scheduleConst';
 import { useRouter } from 'next/navigation';
 
 interface Props {
+  meetId: number | null;
   type: ScheduleStatus;
   onClickSelectFinalDate: () => void;
+  date: Date | null;
+  errorModalToggle: () => void;
+  setErrorMessage: (str: string) => void;
 }
 
-const CalendarViewButtons = ({ type, onClickSelectFinalDate }: Props) => {
+const CalendarViewButtons = ({
+  meetId,
+  type,
+  onClickSelectFinalDate,
+  date,
+  errorModalToggle,
+  setErrorMessage,
+}: Props) => {
   const router = useRouter();
+  const handleClickFinalDate = () => {
+    if (date !== null) onClickSelectFinalDate();
+    else {
+      setErrorMessage('날짜를 선택해주세요.');
+      errorModalToggle();
+    }
+  };
   return (
     <Container>
       {type === SCHEDULE_STATUS.IN_PROGRESS && (
-        <Button name="수정하기" onClick={() => router.push('/meet/1/schedule/edit')} />
+        <Button name="수정하기" onClick={() => router.push(`/meet/${meetId}/schedule/vote`)} />
       )}
       {type === SCHEDULE_STATUS.NEED_REVOTE && (
         <>
-          <Button name="재투표하기" onClick={() => router.push('/meet/1/schedule/create')} />
+          <Button
+            name="재투표하기"
+            onClick={() => router.push(`/meet/${meetId}/schedule/create`)}
+          />
           <Button
             name="수정하기"
             buttonType="gray"
-            onClick={() => router.push('/meet/1/schedule/edit')}
+            onClick={() => router.push(`/meet/${meetId}/schedule/vote`)}
           />
         </>
       )}
@@ -31,9 +52,9 @@ const CalendarViewButtons = ({ type, onClickSelectFinalDate }: Props) => {
           <Button
             name="재투표하기"
             buttonType="gray"
-            onClick={() => router.push('/meet/1/schedule/create')}
+            onClick={() => router.push(`/meet/${meetId}/schedule/create`)}
           />
-          <Button name="날짜 고르기" onClick={onClickSelectFinalDate} />
+          <Button name="날짜 고르기" onClick={handleClickFinalDate} />
         </>
       )}
     </Container>

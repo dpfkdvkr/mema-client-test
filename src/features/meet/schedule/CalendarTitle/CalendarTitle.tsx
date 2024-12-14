@@ -2,15 +2,25 @@ import { SCHEDULE_STATUS } from '@/constants/scheduleConst';
 import React from 'react';
 import { ScheduleStatus } from '@/types/schedules';
 import styled from 'styled-components';
+import { formatDate } from '@/lib/utils/dateUtils';
 
 type Props = {
   status: ScheduleStatus;
+  date?: Date;
+  voted: boolean;
 };
 
-const CalendarTitle = ({ status }: Props) => {
+const CalendarTitle = ({ status, date, voted }: Props) => {
   return (
     <TextContainer>
-      {status === SCHEDULE_STATUS.IN_PROGRESS && (
+      {status === SCHEDULE_STATUS.IN_PROGRESS && !voted && (
+        <p className="title">
+          만남이 가능한 날짜를
+          <br />
+          모두 선택해주세요!
+        </p>
+      )}
+      {status === SCHEDULE_STATUS.IN_PROGRESS && voted && (
         <p className="title">
           다른 미팅원들이
           <br />
@@ -29,7 +39,9 @@ const CalendarTitle = ({ status }: Props) => {
           <p className="description">하나의 날짜가 선택되어야 해요</p>
         </>
       )}
-      {status === SCHEDULE_STATUS.COMPLETED && <p className="title">11월 29일에 만나요!</p>}
+      {status === SCHEDULE_STATUS.COMPLETED && (
+        <p className="title">{date && formatDate(date, 'MM월 DD일')}에 만나요!</p>
+      )}
     </TextContainer>
   );
 };

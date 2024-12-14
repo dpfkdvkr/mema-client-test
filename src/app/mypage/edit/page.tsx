@@ -11,6 +11,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';
 import { Account } from '@/types/account';
 import { getUser, updateUser } from '@/lib/api/account';
+import { MAX_BADGE_COUNT } from '@/constants/accountConst';
 
 const EditMyPage = () => {
   const nickname = useInputState();
@@ -56,15 +57,11 @@ const EditMyPage = () => {
     <>
       <TabBar />
       <Container>
-        {/*<MyPageProfileIcon puzzleId={user?.puzzleId} puzzleColor={user?.puzzleColor} />*/}
-        {/*<MyPageNicknameInput nickname={nickname} />*/}
-        {/*<OwnedBadgeGrid selectedId={user?.puzzleId} ownedBadges={user?.badgeList} />*/}
-        {/*<ColorPalette selectedColor={user?.puzzleColor} />*/}
         <MyPageProfileIcon puzzleId={puzzleId} puzzleColor={puzzleColor} />
         <MyPageNicknameInput nickname={nickname} onBlur={handleNicknameBlur} />
         <OwnedBadgeGrid
           selectedId={puzzleId}
-          ownedBadges={[1, 2, 4, 6, 9]}
+          ownedBadges={Array.from({ length: MAX_BADGE_COUNT }).map((_, i) => i + 1)}
           onClick={(id: number) => setPuzzleId(id)}
         />
         <ColorPalette

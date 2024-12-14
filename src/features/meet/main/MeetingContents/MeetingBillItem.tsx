@@ -2,11 +2,12 @@ import React from 'react';
 import BillStatusItem from '@/features/meet/main/BillStatusItem';
 
 type Props = {
+  isAfterMeet: boolean;
   billCount: number;
 };
 
-const MeetingBillItem = ({ billCount }: Props) => {
-  const status: 'notStarted' | 'completed' = billCount === 0 ? 'notStarted' : 'completed';
+const MeetingBillItem = ({ isAfterMeet, billCount }: Props) => {
+  const status = isAfterMeet ? 'completed' : 'notStarted';
 
   return <BillStatusItem status={status} count={billCount} />;
 };

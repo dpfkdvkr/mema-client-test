@@ -11,10 +11,13 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({ date, onChange }) => {
   const dateRef = useRef(new Date(date));
   const [month, setMonth] = useState(date.getMonth() + 1);
   const [day, setDay] = useState(date.getDate());
-  const [monthDays, setMonthDays] = useState<number[]>([]);
+  const [monthDays, setMonthDays] = useState<number[]>(Array.from({ length: 30 }, (_, i) => i + 1));
+  console.log('date', date);
 
   const updateDateAndTriggerChange = useCallback(() => {
-    onChange(new Date(dateRef.current));
+    const updatedDate = new Date(dateRef.current);
+    updatedDate.setSeconds(0, 0);
+    onChange(updatedDate);
   }, [onChange, dateRef]);
 
   const handleMonthChange = (newMonth: number) => {

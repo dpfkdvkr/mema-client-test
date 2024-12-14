@@ -1,6 +1,5 @@
 import { defaultAxios } from '@/lib/api/defaultAxios';
 import { CreateScheduleData, UpdateScheduleData } from '@/types/schedules';
-import { async } from 'rxjs';
 
 export const getAllSchedules = async (meetId: number) => {
   return await defaultAxios.get(`/meets/${meetId}/vote/date/total`);
