@@ -22,7 +22,7 @@ const SignupPage = () => {
   const email = useInputState();
   const password = useInputState();
   const verificationCode = useInputState();
-
+  const [isVerified, setVerification] = useState(true); // TODO : 고도화 때 인증 기능 추가하면 기본값 false로 수정
   const [currentStep, setCurrentStep] = useState(0);
   const [isOpenModal, toggleOpenModal] = useToggle();
 
@@ -30,7 +30,6 @@ const SignupPage = () => {
     setCurrentStep((prev) => ++prev);
   };
 
-  const [isVerified, setVerification] = useState(false);
   const handleRequestVerification = () => {
     console.log('이메일 인증 요청 보내기');
     setVerification(!isVerified);
@@ -76,7 +75,11 @@ const SignupPage = () => {
             />
             <PasswordInput password={password} />
           </Container>
-          <StyledButton name="다음으로" disabled={!isVerified} onClick={next} />
+          <StyledButton
+            name="다음으로"
+            disabled={!email.value || !password.value /*TODO: !isVerified*/}
+            onClick={next}
+          />
         </>
       ),
       description: '서비스를 이용하실 이메일과 비밀번호를 알려주세요!',
