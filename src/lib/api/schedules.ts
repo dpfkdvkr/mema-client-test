@@ -40,5 +40,5 @@ export const setFinalDate = async ({
 };
 
 export const deleteSchedule = async (meetId: number) => {
-  return await defaultAxios.delete(`/meets/${meetId}`);
+  return await defaultAxios.delete(`/meets/${meetId}/vote/date`);
 };
