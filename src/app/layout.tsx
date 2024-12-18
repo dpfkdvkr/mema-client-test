@@ -3,11 +3,10 @@ import ThemeProviderWrapper from '@/components/common/ThemeProviderWrapper';
 import GlobalStyle from '@/styles/global';
 import Script from 'next/script';
 
-const baseURL = process.env.NEXT_PUBLIC_CLIENT_URL || 'https://localhost:3000';
-
 export const metadata = {
   title: 'mema',
   description: '모임을 더 쉽게 meet mate, mema',
+  keywords: 'mema, 메마, meet mate, 모임 약속 조율, 약속 조율, 정산, 엔빵, 일정 조율, 모임 관리',
   icons: {
     icon: '/favicon.ico',
     apple: '/images/puzzleWithBoxLogo.png',
@@ -17,10 +16,10 @@ export const metadata = {
     description: '모임을 더 쉽게 meet mate, mema',
     images: [
       {
-        url: `${baseURL}/images/puzzleLogo.png`,
+        url: '/images/puzzleLogo.png',
         width: 800,
         height: 600,
-        alt: 'Logo image',
+        alt: 'mema',
       },
     ],
     url: 'https://meet-mate-mema.vercel.app',
@@ -30,7 +29,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'mema',
     description: '모임을 더 쉽게 meet mate, mema',
-    images: [`${baseURL}/images/puzzleWithBoxLogo.png`],
+    images: ['/images/puzzleWithBoxLogo.png'],
   },
 };
 
