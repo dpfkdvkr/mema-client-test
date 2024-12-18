@@ -115,7 +115,7 @@ function MeetIdPage() {
       votedMemberCount,
     );
 
-    if (voteExpiredDate === null) {
+    if (voteExpiredDate === null || votedMemberCount === 0) {
       // 미팅 시작 전
       setMeetStatus(MEET_STATUS.SCHEDULE_BEFORE_USE);
     } else if (!meetDate && voteExpiredDate) {
