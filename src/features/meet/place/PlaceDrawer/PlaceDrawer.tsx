@@ -20,7 +20,7 @@ const PlaceDrawer = ({ myLocation, totalLocation }: Props) => {
       <div className="grayBox">line</div>
       <>
         {/* 1명일때 */}
-        {myLocation && totalLocation.arrivalStation === '구현 중! 기다려주세용^_^' && (
+        {myLocation && (
           <>
             <div className="drawer">
               <div className="drawerTitle">다른 미팅원들이 투표중이에요.</div>
