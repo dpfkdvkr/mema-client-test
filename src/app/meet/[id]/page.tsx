@@ -12,7 +12,7 @@ import { AxiosResponse } from 'axios';
 import { MeetResponse, MeetStatus } from '@/types/meets';
 import { getMeet } from '@/lib/api/meets';
 import { useParams, useRouter } from 'next/navigation';
-import { toDate } from '@/lib/utils/dateUtils';
+import { compareDateWithToday, toDate } from '@/lib/utils/dateUtils';
 import { getBills } from '@/lib/api/bills';
 import { Bills } from '@/types/bills';
 import styled from 'styled-components';
@@ -24,6 +24,7 @@ import { ScheduleResponse, VoteDate } from '@/types/schedules';
 import { MEET_STATUS } from '@/constants/meetConst';
 import { userMeetStore } from '@/store/userMeetStore';
 import { useScheduleStatus } from '@/lib/hooks/useScheduleStatus';
+import { getTotalLocation } from '@/lib/api/locate';
 
 function MeetIdPage() {
   const router = useRouter();
@@ -50,6 +51,12 @@ function MeetIdPage() {
   const { data: bills } = useQuery<AxiosResponse<Bills[]>>({
     queryKey: ['bills', meetId],
     queryFn: () => getBills(meetId as number),
+    enabled: meetId !== null,
+  });
+
+  const { data: totalLocation } = useQuery<AxiosResponse>({
+    queryKey: ['totalLocation', meetId],
+    queryFn: () => getTotalLocation(meetId as number),
     enabled: meetId !== null,
   });
 
@@ -151,7 +158,7 @@ function MeetIdPage() {
         }
       } else {
         // 장소 확정 후
-        if (new Date(meetDate) > new Date()) {
+        if (compareDateWithToday(meetDate) >= 0) {
           setMeetStatus(MEET_STATUS.BILL_BEFORE_MEET);
         } else {
           setMeetStatus(MEET_STATUS.BILL_AFTER_MEET);
@@ -201,14 +208,12 @@ function MeetIdPage() {
         />
         <MeetingPlaceItem
           totalMembers={meet.data.members.length}
-          voteExpiredLocation={toDate(meet.data.voteExpiredLocation)}
+          votedMembers={totalLocation?.data?.startStationList.length}
           meetLocation={meet.data.meetLocation}
-          votedMembers={0}
         />
         <MeetingBillItem
           isAfterMeet={meetStatus === MEET_STATUS.BILL_AFTER_MEET}
-          billCount={bills.data.length}
-          // billCount={0}
+          billCount={bills?.data?.length}
         />
       </Container>
       <MeetingButtons meetId={meetId} status={meetStatus} />
