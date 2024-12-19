@@ -14,6 +14,11 @@ import { useParams } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
+interface LatLng {
+  lat: number;
+  lon: number;
+}
+
 const PlacePage = () => {
   const params = useParams();
   const meetId = (params?.id && Number(params.id)) || null;
@@ -182,7 +187,7 @@ const PlacePage = () => {
       mapRef.current.setCenter(midPoint);
 
       // 출발 지점 리스트 순회
-      totalLocation.data.startStationList.forEach((startStation: Station) => {
+      totalLocation.data.startStationList.forEach((startStation: Station, index: number) => {
         const startPoint = new naver.maps.LatLng(
           parseFloat(startStation.lat),
           parseFloat(startStation.lot),
@@ -194,7 +199,7 @@ const PlacePage = () => {
           map: mapRef.current as naver.maps.Map,
           title: startStation.stationName,
           icon: {
-            url: '/svgs/place/marker.svg',
+            url: `/svgs/place/marker-${index + 1}.svg`,
             size: new naver.maps.Size(36, 39),
             origin: new naver.maps.Point(0, 0),
             anchor: new naver.maps.Point(16, 16),
