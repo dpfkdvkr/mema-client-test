@@ -158,7 +158,7 @@ function MeetIdPage() {
         }
       } else {
         // 장소 확정 후
-        if (compareDateWithToday(meetDate) >= 0) {
+        if (compareDateWithToday(meetDate) <= 0) {
           setMeetStatus(MEET_STATUS.BILL_BEFORE_MEET);
         } else {
           setMeetStatus(MEET_STATUS.BILL_AFTER_MEET);
