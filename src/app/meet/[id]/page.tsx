@@ -163,12 +163,9 @@ function MeetIdPage() {
   // 나의 미팅 멤버 아이디 저장
   useEffect(() => {
     if (!meet?.data?.members || !meetId) return;
-    const myMeetMemberId = getMeetMemberId(meetId);
-    if (!myMeetMemberId) {
-      const foundMeetMemberId = meet.data.members.find((member) => member.isMe)?.meetMemberId;
-      if (foundMeetMemberId) {
-        setMeetMemberId(meetId, foundMeetMemberId);
-      }
+    const foundMeetMemberId = meet.data.members.find((member) => member.isMe)?.meetMemberId;
+    if (foundMeetMemberId) {
+      setMeetMemberId(meetId, foundMeetMemberId);
     }
   }, [meetId, meet, getMeetMemberId, setMeetMemberId]);
 
