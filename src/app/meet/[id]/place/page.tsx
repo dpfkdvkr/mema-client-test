@@ -39,8 +39,7 @@ const PlacePage = () => {
 
   const { data: stations } = useQuery<AxiosResponse>({
     queryKey: ['meet', meetId],
-    queryFn: () => getStations(meetId as number),
-    enabled: meetId !== null,
+    queryFn: () => getStations(),
   });
 
   const { data: myLocation, refetch: refetchMyLocation } = useQuery<AxiosResponse>({
