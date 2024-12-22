@@ -7,3 +7,7 @@ export type Account = {
   meetCount: number;
   badgeCount: number;
 };
+
+export type Badges = {
+  [key: string]: boolean; // "badge1" : true 형태
+};

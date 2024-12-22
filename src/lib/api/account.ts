@@ -40,3 +40,8 @@ export const sendEmail = async (data: { email: string }) => {
 export const verifyCode = async (data: { email: string; code: string }) => {
   return await defaultAxios.post(`/join/custom/checkEmail`, data);
 };
+
+// 뱃지 보유 현황 조회
+export const getBadges = async () => {
+  return await defaultAxios.get(`/mypage/badge`);
+};
