@@ -50,3 +50,8 @@ export const getBadges = async () => {
 export const resign = async () => {
   return await defaultAxios.delete(`/mypage/resign`);
 };
+
+// 비밀번호 수정
+export const updatePassword = async (data: { password: string }) => {
+  return await defaultAxios.patch(`/mypage/auth`, data);
+};
