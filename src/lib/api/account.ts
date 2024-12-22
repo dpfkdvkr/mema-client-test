@@ -45,3 +45,8 @@ export const verifyCode = async (data: { email: string; code: string }) => {
 export const getBadges = async () => {
   return await defaultAxios.get(`/mypage/badge`);
 };
+
+// 회원 탈퇴
+export const resign = async () => {
+  return await defaultAxios.delete(`/mypage/resign`);
+};
