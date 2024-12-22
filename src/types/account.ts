@@ -6,6 +6,7 @@ export type Account = {
   visitCount: number;
   meetCount: number;
   badgeCount: number;
+  email: string;
 };
 
 export type Badges = {
