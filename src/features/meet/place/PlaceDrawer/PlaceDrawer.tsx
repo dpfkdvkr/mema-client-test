@@ -1,11 +1,14 @@
 'use client';
 import Button from '@/components/Button';
 import useToggle from '@/lib/hooks/useToggle';
-import { Station, TotalLocation } from '@/types/locate';
+import { Station, Store, TotalLocation } from '@/types/locate';
 import { useParams, useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import PlaceDrawerModal from './PlaceDrawerModal';
+import { useQuery } from '@tanstack/react-query';
+import { AxiosResponse } from 'axios';
+import { getRecommends } from '@/lib/api/locate';
 
 type Props = {
   myLocation: string;
@@ -16,8 +19,24 @@ const PlaceDrawer = ({ myLocation, totalLocation }: Props) => {
   const router = useRouter();
   const params = useParams();
   const meetId = (params?.id && Number(params.id)) || null;
+  const [selectStore, setSelectStore] = useState<Store>();
   const [isOpenAIDrawer, toggleOpenAIDrawer] = useToggle();
   const [isOpenAIModal, toggleOpenAIModal] = useToggle();
+
+  const { data: recommends } = useQuery<AxiosResponse>({
+    queryKey: ['recommends', meetId],
+    queryFn: () => getRecommends(meetId as number),
+    enabled: meetId !== null,
+  });
+  console.log(recommends?.data.stores);
+
+  const onClickStore = (index: number) => {
+    if (recommends?.data.stores) {
+      const selectedStore = recommends.data.stores[index];
+      setSelectStore(selectedStore);
+    }
+    toggleOpenAIModal();
+  };
 
   return (
     <Container>
@@ -47,20 +66,15 @@ const PlaceDrawer = ({ myLocation, totalLocation }: Props) => {
                     먹거리, 놀거리 알려드릴게요!
                   </div>
                   <div className="storeContainer">
-                    <div className="store" onClick={toggleOpenAIModal}>
-                      <div className="storeImg">img</div>
-                      <div className="storeContent">
-                        <p className="storeTitle">제목</p>
-                        <p className="storeAddress">내용내용내용내용내용내용내용내용내용내용내용</p>
+                    {recommends?.data.stores.map((store: Store, index: number) => (
+                      <div key={index} className="store" onClick={() => onClickStore(index)}>
+                        <div className="storeImg">img</div>
+                        <div className="storeContent">
+                          <p className="storeTitle">{store.name}</p>
+                          <p className="storeAddress">{store.address}</p>
+                        </div>
                       </div>
-                    </div>
-                    <div className="store">
-                      <div className="storeImg">img</div>
-                      <div className="storeContent">
-                        <p className="storeTitle">제목</p>
-                        <p className="storeAddress">내용</p>
-                      </div>
-                    </div>
+                    ))}
                   </div>
                 </div>
                 <StyledButton name="이동 시간 보기" onClick={toggleOpenAIDrawer} />
@@ -87,7 +101,7 @@ const PlaceDrawer = ({ myLocation, totalLocation }: Props) => {
             )}
           </>
         )}
-        {isOpenAIModal && <PlaceDrawerModal onClose={toggleOpenAIModal} />}
+        {isOpenAIModal && <PlaceDrawerModal store={selectStore} onClose={toggleOpenAIModal} />}
       </>
     </Container>
   );

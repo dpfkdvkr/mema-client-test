@@ -1,12 +1,14 @@
+import { Store } from '@/types/locate';
 import React from 'react';
 import { Clock, Map, Phone, Star } from 'react-feather';
 import styled from 'styled-components';
 
 type Props = {
+  store?: Store;
   onClose: () => void;
 };
 
-const PlaceDrawerModal = ({ onClose }: Props) => {
+const PlaceDrawerModal = ({ store, onClose }: Props) => {
   return (
     <Container>
       <div className="background" onClick={onClose}></div>
@@ -16,28 +18,29 @@ const PlaceDrawerModal = ({ onClose }: Props) => {
           <div className="modalContent">
             <div className="top">
               <p className="titleContainer">
-                <b>cafe쿰베오</b>카페, 디저트
+                <b>{store?.name}</b>
+                {store?.category}
               </p>
               <div className="scoreContainer">
                 <Star />
-                <p>4.86</p>
+                <p>{store?.score}</p>
               </div>
             </div>
             <div className="middle">
               <div className="infoContent">
                 <Map />
-                <div>서울 강동구 풍성로35길 10 1층</div>
+                <div>{store?.address}</div>
               </div>
               <div className="infoContent">
                 <Phone />
-                <div>0507-1406-5280</div>
+                <div>{store?.phone}</div>
               </div>
               <div className="infoContent">
                 <Clock />
-                <div>매일 12:00 - 22:00</div>
+                <div>{store?.time}</div>
               </div>
             </div>
-            <p className="intro">소개글</p>
+            <p className="intro">{store?.description}</p>
           </div>
         </div>
       </div>
