@@ -1,9 +1,11 @@
 'use client';
 import Button from '@/components/Button';
+import useToggle from '@/lib/hooks/useToggle';
 import { Station, TotalLocation } from '@/types/locate';
 import { useParams, useRouter } from 'next/navigation';
 import React from 'react';
 import styled from 'styled-components';
+import PlaceDrawerModal from './PlaceDrawerModal';
 
 type Props = {
   myLocation: string;
@@ -14,6 +16,8 @@ const PlaceDrawer = ({ myLocation, totalLocation }: Props) => {
   const router = useRouter();
   const params = useParams();
   const meetId = (params?.id && Number(params.id)) || null;
+  const [isOpenAIDrawer, toggleOpenAIDrawer] = useToggle();
+  const [isOpenAIModal, toggleOpenAIModal] = useToggle();
 
   return (
     <Container>
@@ -34,24 +38,56 @@ const PlaceDrawer = ({ myLocation, totalLocation }: Props) => {
         {/* 2명이상일떄 */}
         {totalLocation && (
           <>
-            <div className="drawer">
-              <div className="drawerTitle">
-                <b>{totalLocation.midStation.stationName}</b>까지
-                <br />
-                평균 이동 시간은 <b>15분</b>입니다!
-              </div>
-              <div className="descriptionContainer">
-                {totalLocation.startStationList.map((station: Station, index: number) => (
-                  <p key={index} className="description">
-                    <div className="number">{index + 1}</div> <b>{station.stationName}</b>에서부터{' '}
-                    <b>18분</b>
-                  </p>
-                ))}
-              </div>
-            </div>
-            <StyledButton name="추천지 보기" onClick={() => alert('준비중입니다')} />
+            {isOpenAIDrawer ? (
+              <>
+                <div className="drawer">
+                  <div className="drawerTitle">
+                    <b>{totalLocation.midStation.stationName}</b>근처의
+                    <br />
+                    먹거리, 놀거리 알려드릴게요!
+                  </div>
+                  <div className="storeContainer">
+                    <div className="store" onClick={toggleOpenAIModal}>
+                      <div className="storeImg">img</div>
+                      <div className="storeContent">
+                        <p className="storeTitle">제목</p>
+                        <p className="storeAddress">내용내용내용내용내용내용내용내용내용내용내용</p>
+                      </div>
+                    </div>
+                    <div className="store">
+                      <div className="storeImg">img</div>
+                      <div className="storeContent">
+                        <p className="storeTitle">제목</p>
+                        <p className="storeAddress">내용</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <StyledButton name="이동 시간 보기" onClick={toggleOpenAIDrawer} />
+              </>
+            ) : (
+              <>
+                <div className="drawer">
+                  <div className="drawerTitle">
+                    <b>{totalLocation.midStation.stationName}</b>까지
+                    <br />
+                    평균 이동 시간은 <b>15분</b>입니다!
+                  </div>
+                  <div className="descriptionContainer">
+                    {totalLocation.startStationList.map((station: Station, index: number) => (
+                      <p key={index} className="description">
+                        <div className="number">{index + 1}</div> <b>{station.stationName}</b>
+                        에서부터 <b>18분</b>
+                      </p>
+                    ))}
+                  </div>
+                </div>
+                <StyledButton name="추천지 보기" onClick={toggleOpenAIDrawer} />
+              </>
+            )}
           </>
         )}
+        {isOpenAIModal && <PlaceDrawerModal onClose={toggleOpenAIModal} />}
       </>
     </Container>
   );
@@ -119,6 +155,44 @@ const Container = styled.div`
         b {
           font-weight: normal;
           color: ${({ theme }) => theme.colors.green};
+        }
+      }
+    }
+    .storeContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      .store {
+        background-color: ${({ theme }) => theme.colors.gray[6]};
+        border-radius: 15px;
+        padding: 16px 18px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+        .storeImg {
+          border-radius: 15px;
+          background-color: ${({ theme }) => theme.colors.gray[4]};
+          width: 74px;
+          height: 74px;
+          flex-shrink: 0;
+          text-indent: -9999px;
+        }
+        .storeContent {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          width: calc(100% - 90px);
+          .storeTitle {
+            ${({ theme }) => theme.fonts.title['xs']};
+          }
+          .storeAddress {
+            ${({ theme }) => theme.fonts.text['lg']};
+            color: ${({ theme }) => theme.colors.gray[3]};
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
         }
       }
     }
